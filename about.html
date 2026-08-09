@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Layer Up Labs</title>
+<meta name="description" content="Layer Up Labs is a one-person 3D design and print studio run by Emmet in Lutz, Florida.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Newsreader:opsz,wght@6..72,300..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="zrail" aria-hidden="true">
+  <div class="zrail__mark">Z&nbsp;AXIS</div>
+  <div class="zrail__ticks"></div>
+  <div class="zrail__readout" id="z">0.00&nbsp;MM</div>
+</div>
+
+<div class="shell">
+<div class="wrap">
+
+  <nav class="nav">
+    <a class="nav__brand" href="index.html">Layer&nbsp;Up&nbsp;<span>Labs</span></a>
+    <a href="work.html">Work</a>
+    <a href="commissions.html">Commissions</a>
+    <a href="about.html" aria-current="page">About</a>
+    <a href="https://www.etsy.com/shop/LayerUpLabs">Shop</a>
+  </nav>
+
+  <header class="hero" style="padding-bottom:2rem;">
+    <h1 style="font-size:clamp(2.2rem,6vw,4.2rem);margin-bottom:1.4rem;">About</h1>
+    <p class="lede">
+      Layer Up Labs is one person, a few printers, and a long habit of
+      making things that didn't exist before.
+    </p>
+  </header>
+
+  <section class="section">
+    <div class="piece">
+      <div>
+        <div class="piece__shot">
+          <!-- EDIT: a photo of Emmet at the printer or the workbench. This one matters —
+               a real face is most of what makes a small studio trustworthy. -->
+        </div>
+      </div>
+
+      <div>
+        <!-- ============================================================
+             EDIT: this whole section. Written in Emmet's voice, first person.
+             Keep it specific and unpolished rather than promotional.
+             ============================================================ -->
+        <p>
+          I'm Emmet. I got a 3D printer when I was twelve, and the first thing I
+          designed on it was a fidget spinner in Tinkercad. It was not good.
+        </p>
+        <p>
+          What kept me going was the part that still gets me: you make a shape on a
+          screen, and a few hours later you can hold it. That gap between the model
+          and the object is where all the interesting problems live — wall thickness,
+          orientation, where a part will fail under load, how to hide a seam.
+        </p>
+        <p>
+          Since then I've moved from Tinkercad into Blender and ZBrush, built and
+          rebuilt an RC car out of printed parts, made a battleship in sections,
+          and taken on commissioned modeling work for an independent game studio.
+          Layer Up Labs is where that work lives.
+        </p>
+        <p>
+          I'm based in Lutz, Florida, and I'm headed toward mechanical engineering —
+          which is, more or less, the same question at a larger scale.
+        </p>
+
+        <div class="speclist">
+          <div><span>Modeling</span><span>Blender, ZBrush</span></div>
+          <div><span>Also</span><span>Adobe Creative Suite</span></div>
+          <div><span>Printing</span><span>FDM &amp; resin</span></div>
+          <div><span>Since</span><span>2023</span></div>
+        </div>
+
+        <a class="btn" href="mailto:hello@layeruplabs.com">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span class="meta">Layer Up Labs &middot; Lutz, Florida</span>
+    <span class="meta">
+      <a href="https://www.etsy.com/shop/LayerUpLabs">Etsy shop</a> &nbsp;/&nbsp;
+      <a href="mailto:hello@layeruplabs.com">Email</a>
+    </span>
+  </footer>
+
+</div>
+</div>
+
+<script>
+  (function () {
+    var out = document.getElementById('z');
+    if (!out || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var tick = function () {
+      var max = document.body.scrollHeight - window.innerHeight;
+      var mm = max > 0 ? (window.scrollY / max) * 148 : 0;
+      out.textContent = mm.toFixed(2) + '\u00A0MM';
+    };
+    window.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+</script>
+
+</body>
+</html>
