@@ -3,105 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Emmet — Portfolio: modeling, optics, fabrication</title>
-<meta name="description" content="Emmet is a high school senior in Lutz, Florida headed toward mechanical engineering. Portfolio of 3D modeling, photography, 3D printing, illustration and more.">
-<meta name="theme-color" content="#FFF1E7">
+<title>Layer Up Labs — Engineering, 3D printing and design</title>
+<meta name="description" content="Layer Up Labs is the studio of Emmet, a high school student in Lutz, Florida who models, prints and finishes things. Headed for mechanical engineering.">
+<meta name="theme-color" content="#f6f4ef">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=3">
-<script>
-  /* Play the intro only on the first page of a session (and not for reduced-motion users). */
-  (function () { try { if (!sessionStorage.getItem('ec-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('intro-on'); } catch (e) {} })();
-</script>
-<script src="js/core.js?v=3"></script>
-<script src="js/render.js?v=3" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
-<body data-page="home">
-<noscript><p style="padding:1rem;text-align:center;background:#805232;color:#FFF1E7;margin:0">This portfolio needs JavaScript to load its project data.</p></noscript>
-<main id="main" tabindex="-1">
-<div class="wrap">
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="index.html">Layer Up <span>Labs</span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="work.html">Work</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="commissions.html">Inquire</a>
+  </nav>
+</div></header>
+<main>
 
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__grid">
-      <div>
-        <div class="hero__meta"><span class="tag-rev">SHEET 1 OF 5</span><span class="tag-rev">REV A</span><span class="tag-rev">LUTZ, FL</span></div>
-        <h1 id="hero-title">Emmet<span>.</span></h1>
-        <p class="hero__intro"><span class="ph">[ONE-LINE INTRO]</span></p>
-        <div class="btn-row">
-          <a class="btn" href="work.html">View the work</a>
-          <a class="btn btn--ghost" href="about.html">About me</a>
-        </div>
-        <p class="hero__facts">Varsity swim captain · Photography club co-founder · 300+ service hours · Headed for mechanical engineering</p>
-      </div>
+<section class="hero"><div class="wrap">
+  <div>
+    <p class="eyebrow">Studio &middot; Lutz, Florida</p>
+    <h1>Designed on screen. Built <em>layer by layer.</em></h1>
+    <p class="lede" style="margin-top:1.6rem">Layer Up Labs is where I model, 3D print and finish things, from RC boats to earrings. I&rsquo;m Emmet, and I&rsquo;m headed for mechanical engineering.</p>
+    <div class="btns"><a class="btn" href="work.html">See the work</a><a class="btn btn--ghost" href="shop.html">Shop</a></div>
+  </div>
+  <div class="hero__img"><img src="images/earrings_03.jpg.webp" alt="Pair of 3D-printed macaroni earrings on white marble"></div>
+</div></section>
 
-      <figure class="portrait crop" data-portrait tabindex="0" role="group" aria-label="Portrait of Emmet. Hover, focus or tap to reveal the photograph.">
-        <div class="portrait__frame">
-          <img class="portrait__real" data-src="assets/images/portrait.jpg" alt="Photograph of Emmet" width="800" height="1000" decoding="async">
-          <img class="portrait__wire" data-src="assets/images/portrait-wire.jpg" alt="" aria-hidden="true" width="800" height="1000" decoding="async">
-        </div>
-        <figcaption><span>FIG. 01 — EMMET</span><span>HOVER TO DEVELOP</span></figcaption>
-      </figure>
-    </div>
+<section class="section section--alt"><div class="wrap">
+  <div class="section__head"><h2>Three ways I make things</h2><a class="more" href="work.html">All work &rarr;</a></div>
+  <div class="grid"><a class="card" href="work.html#printing">
+      <div class="thumb"><img src="images/earrings_03.jpg.webp" alt="Pair of 3D-printed macaroni earrings on white marble" loading="lazy"></div>
+      <p class="tag">3D printing</p>
+      <h3>Fabrication</h3>
+      <p class="sum">Designed, printed and finished by hand: earrings, RC builds and more.</p>
+    </a><a class="card" href="work.html#modeling">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Blender &amp; ZBrush</p>
+      <h3>3D Modeling</h3>
+      <p class="sum">Locomotives, game assets and sculpts built on screen.</p>
+    </a><a class="card" href="work.html#photography">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Photography</p>
+      <h3>Photography</h3>
+      <p class="sum">People, landscapes and sports.</p>
+    </a></div>
+</div></section>
 
-    <!-- SPEC STRIP -->
-    <div class="spec" role="list" aria-label="Quick specs">
-      <div role="listitem"><b>Founded</b> 2023</div>
-      <div role="listitem"><b>Modeling</b> Blender, ZBrush</div>
-      <div role="listitem"><b>Process</b> FDM &amp; resin</div>
-      <div role="listitem"><b>Based</b> Lutz, Florida</div>
-    </div>
-  </section>
+<section class="section"><div class="wrap">
+  <div class="section__head"><h2>How a part gets made</h2></div>
+  <div class="steps">
+    <div class="step"><h3>Model</h3><p>Blender and ZBrush. Every part starts as geometry on a screen.</p></div>
+    <div class="step"><h3>Slice</h3><p>Turn the model into layers and decide how it will actually be built.</p></div>
+    <div class="step"><h3>Print</h3><p>FDM and resin. This is where the model finds out what it got wrong.</p></div>
+    <div class="step"><h3>Finish</h3><p>Support removal, sanding, assembly, paint.</p></div>
+  </div>
+</div></section>
 
-  <!-- DEPARTMENTS -->
-  <section class="sec" aria-labelledby="dept-title">
-    <div class="sec-head">
-      <div><p class="eyebrow">Index of drawings</p><h2 id="dept-title">Departments</h2></div>
-      <a class="link-arrow" href="work.html">All work →</a>
-    </div>
-    <div class="grid grid--cats" id="dept-grid"><p class="result-count">Loading…</p></div>
-  </section>
+<section class="section section--alt"><div class="wrap two">
+  <img src="images/emmet.jpeg" alt="Emmet smiling and giving two thumbs up beside his framed digital artwork at a gallery" loading="lazy" style="max-height:480px;object-fit:cover;object-position:top">
+  <div>
+    <p class="eyebrow">About Emmet</p>
+    <h2>The person behind the printer</h2>
+    <p style="margin-top:1.2rem">I&rsquo;m a high school student in Lutz, Florida, headed for mechanical engineering. I got my first 3D printer at twelve and started Layer Up Labs in 2023. I also captain my varsity swim team and co-founded our photography club.</p>
+    <div class="btns"><a class="btn btn--ghost" href="about.html">More about me</a></div>
+  </div>
+</div></section>
 
-  <!-- FEATURED -->
-  <section class="sec" aria-labelledby="feat-title">
-    <div class="sec-head">
-      <div><p class="eyebrow">Selected parts</p><h2 id="feat-title">Featured work</h2></div>
-      <a class="link-arrow" href="work.html">All work →</a>
-    </div>
-    <div class="grid" id="featured-grid"><p class="result-count">Loading drawings…</p></div>
-  </section>
+<section class="section"><div class="wrap band">
+  <div><h2>Have something that needs making?</h2><p>Send a sketch, a photo or a broken part. It gets modeled from scratch, printed and finished.</p></div>
+  <div class="btns" style="margin:0"><a class="btn" href="commissions.html">Inquire</a><a class="btn btn--ghost" href="https://www.etsy.com/shop/LayerUpLabs">Etsy shop</a></div>
+</div></section>
 
-  <!-- PROCESS -->
-  <section class="sec" aria-labelledby="proc-title">
-    <div class="sec-head">
-      <div><p class="eyebrow">Screen to shelf</p><h2 id="proc-title">How a part gets made</h2></div>
-    </div>
-    <ol class="process">
-      <li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6 40 15V33L24 42 8 33V15ZM8 15 24 24 40 15M24 24V42"/></svg><span class="n">STEP 01</span><h3>Model</h3><p>Blender and ZBrush. Every part starts as geometry on a screen.</p></li>
-      <li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8 42 16 24 24 6 16ZM6 24 24 32 42 24M6 32 24 40 42 32"/></svg><span class="n">STEP 02</span><h3>Slice</h3><p>Turn the model into layers and decide how it will actually be built.</p></li>
-      <li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 6H32V16L26 24H22L16 16ZM24 24V32M10 40H38M14 36H34"/></svg><span class="n">STEP 03</span><h3>Print</h3><p>FDM and resin. This is where the model finds out what it got wrong.</p></li>
-      <li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6 28 20 42 24 28 28 24 42 20 28 6 24 20 20Z"/></svg><span class="n">STEP 04</span><h3>Finish</h3><p>Support removal, sanding, assembly, paint. Then it goes on the shelf.</p></li>
-    </ol>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="sec" id="contact" aria-labelledby="contact-title">
-    <div class="contact crop">
-      <div>
-        <p class="eyebrow">Title block · contact</p>
-        <h2 id="contact-title">Got a part that needs making?</h2>
-        <p><span class="ph">[CONTACT BLURB]</span> Commissions go through Layer Up Labs, my print studio. Everything else, just say hello.</p>
-        <div class="btn-row">
-          <a class="btn" href="commissions.html">Commission a piece</a>
-          <a class="btn btn--ghost" href="mailto:hello@layeruplabs.com">Email me</a>
-        </div>
-      </div>
-      <dl id="contact-links"></dl>
-    </div>
-  </section>
-
-</div>
 </main>
+<footer class="site-footer"><div class="wrap">
+  <span>&copy; 2026 Layer Up Labs &middot; Lutz, Florida</span>
+  <span><a href="https://www.etsy.com/shop/LayerUpLabs">Etsy</a><a href="mailto:hello@layeruplabs.com">hello@layeruplabs.com</a><a href="assets/resume.pdf">R&eacute;sum&eacute;</a></span>
+</div></footer>
 </body>
 </html>
