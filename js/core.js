@@ -102,7 +102,7 @@
     var items = NAV.map(function (n) {
       return '<li><a href="' + n[1] + '"' + (n[2] === cur ? ' aria-current="page"' : '') + '>' + n[0] + '</a></li>';
     }).join('');
-    var logo = '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#4fd1ff" stroke-width="1.5"><circle cx="16" cy="16" r="11"/><path d="M16 1v8M16 23v8M1 16h8M23 16h8" stroke="#eaf2fb"/><circle cx="16" cy="16" r="2.2" fill="#ff6a1f" stroke="none"/></svg>';
+    var logo = '<svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#326080" stroke-width="1.6"><rect x="5" y="5" width="22" height="22" rx="2"/><path d="M5 12h22M12 5v22" stroke="#1B3347"/><circle cx="21" cy="21" r="3" fill="#805232" stroke="none"/></svg>';
     var h = document.createElement('header');
     h.className = 'site-header';
     h.innerHTML =
@@ -183,31 +183,6 @@
     update();
   }
 
-  /* ---------- crosshair cursor with live X/Y (fine pointers only) ---- */
-  function buildCursor() {
-    if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    var c = document.createElement('div');
-    c.className = 'xh'; c.setAttribute('aria-hidden', 'true');
-    c.innerHTML = '<i class="xh__h"></i><i class="xh__v"></i><i class="xh__ring"></i><span class="xh__lbl">X 0000 Y 0000</span>';
-    document.body.appendChild(c);
-    var lbl = $('.xh__lbl', c), x = 0, y = 0, queued = false;
-    var pad = function (n) { return String(Math.max(0, Math.round(n))).padStart(4, '0'); };
-    function draw() {
-      queued = false;
-      c.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-      lbl.textContent = 'X ' + pad(x) + '  Y ' + pad(y);
-    }
-    document.documentElement.classList.add('has-xhair');
-    addEventListener('mousemove', function (e) {
-      x = e.clientX; y = e.clientY;
-      c.classList.add('is-on');
-      c.classList.toggle('is-link', !!(e.target.closest && e.target.closest('a, button, [tabindex="0"], summary')));
-      if (!queued) { queued = true; requestAnimationFrame(draw); }
-    }, { passive: true });
-    document.addEventListener('mouseleave', function () { c.classList.remove('is-on'); });
-    document.addEventListener('mouseenter', function () { c.classList.add('is-on'); });
-  }
-
   /* ---------- page transitions -------------------------------------- */
   function buildTransitions() {
     var wipe = document.createElement('div');
@@ -240,20 +215,17 @@
     var d = function (path, delay, dur, cls) {
       return '<path class="d ' + (cls || '') + '" pathLength="1" style="--d:' + delay + 's;--t:' + dur + 's" d="' + path + '"/>';
     };
-    var wheel = function (cx, delay) {
-      return '<circle class="d" pathLength="1" style="--d:' + delay + 's;--t:.7s" cx="' + cx + '" cy="281" r="19"/>';
-    };
     var svg =
       '<svg class="intro__svg" viewBox="0 0 1000 440" aria-hidden="true">' +
       d('M10 10H990V430H10Z', 0, 0.8, 'c') + d('M26 26H974V414H26Z', 0.15, 0.8, 'c') +
-      d('M20 300H980', 0.3, 0.7) +
-      d('M130 238V128H300V150H610V98H775V150H880V238Z', 0.5, 1.0) +
-      d('M95 238H905V248H95Z', 0.9, 0.6) +
-      wheel(188, 1.1) + wheel(250, 1.15) + wheel(312, 1.2) + wheel(638, 1.25) + wheel(700, 1.3) + wheel(762, 1.35) +
-      d('M632 114H676V154H632ZM690 114H752V154H690Z', 1.2, 0.5) +
-      d('M600 60H880', 1.4, 0.5, 'c') + d('M780 340H974V414', 1.4, 0.5, 'c') +
-      '<text x="500" y="66" text-anchor="middle" font-size="16" letter-spacing="3" style="--d:1.5s">EMMET — PORTFOLIO</text>' +
-      '<text x="800" y="372" text-anchor="middle" font-size="12" letter-spacing="2" style="--d:1.6s">DWG EC-000 · SHEET 1 · REV A</text>' +
+      d('M420 120H580V280H420Z', 0.4, 0.9) +
+      '<circle class="d" pathLength="1" style="--d:.7s;--t:.9s" cx="500" cy="200" r="80"/>' +
+      d('M370 200H630M500 70V330', 1.0, 0.6, 'c') +
+      d('M420 312V336M580 312V336M420 324H580', 1.3, 0.5, 'c') +
+      d('M780 340H974V414M780 340V414', 1.4, 0.5, 'c') +
+      '<text x="500" y="318" text-anchor="middle" font-size="12" letter-spacing="2" style="--d:1.6s;fill:var(--cyan)">160</text>' +
+      '<text x="500" y="378" text-anchor="middle" font-size="22" letter-spacing="6" style="--d:1.5s;fill:var(--ink)">EMMET — PORTFOLIO</text>' +
+      '<text x="877" y="382" text-anchor="middle" font-size="12" letter-spacing="2" style="--d:1.7s">SHEET 1 · REV A</text>' +
       '</svg>';
     var o = document.createElement('div');
     o.className = 'intro';
@@ -287,7 +259,7 @@
     $('.intro__skip', o).focus();
   }
 
-  /* shared SVG filters: edge-detect "wireframe" look + nothing else */
+  /* shared SVG filter: edge-detect "wireframe" look (blue lines on paper) */
   function buildFilters() {
     var s = document.createElement('div');
     s.setAttribute('aria-hidden', 'true');
@@ -297,7 +269,7 @@
       '<feColorMatrix type="saturate" values="0"/>' +
       '<feConvolveMatrix order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" edgeMode="duplicate"/>' +
       '<feComponentTransfer><feFuncR type="linear" slope="2.4"/><feFuncG type="linear" slope="2.4"/><feFuncB type="linear" slope="2.4"/></feComponentTransfer>' +
-      '<feColorMatrix type="matrix" values=".31 0 0 0 0  .82 0 0 0 0  1 0 0 0 0  0 0 0 0 1"/>' +
+      '<feColorMatrix type="matrix" values="-.8 0 0 0 1  -.6 0 0 0 .945  -.4 0 0 0 .906  0 0 0 0 1"/>' +
       '</filter></svg>';
     document.body.appendChild(s);
   }
@@ -308,7 +280,6 @@
       buildHeader();
       buildFilters();
       buildZ();
-      buildCursor();
       buildTransitions();
       EC.externalize();
       // Footer needs site.json (social links); the page still works without it.

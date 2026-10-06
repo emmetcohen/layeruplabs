@@ -63,19 +63,8 @@
     load().then(function (r) {
       var feat = r.data.projects.filter(function (p) { return p.featured; }).slice(0, 6);
       grid.innerHTML = feat.map(function (p) { return projectTile(p, r.data); }).join('');
-      var legend = $('#loco-legend');
-      if (legend) {
-        legend.innerHTML = r.data.categories.map(function (c) {
-          return '<a href="category.html?c=' + esc(c.id) + '" data-cat="' + esc(c.id) + '"><b>' + esc(c.code) + '</b>' + esc(c.name) + '</a>';
-        }).join('');
-        // legend hover/focus lights the matching callout on the drawing
-        $$('a', legend).forEach(function (a) {
-          var target = $('.callout[data-cat="' + a.getAttribute('data-cat') + '"]');
-          if (!target) return;
-          ['mouseenter', 'focus'].forEach(function (ev) { a.addEventListener(ev, function () { target.classList.add('is-hot'); }); });
-          ['mouseleave', 'blur'].forEach(function (ev) { a.addEventListener(ev, function () { target.classList.remove('is-hot'); }); });
-        });
-      }
+      var depts = $('#dept-grid');
+      if (depts) depts.innerHTML = r.data.categories.map(function (c) { return categoryTile(c, r.data); }).join('');
       var contact = $('#contact-links');
       if (contact && r.site) {
         var L = r.site.links || {};

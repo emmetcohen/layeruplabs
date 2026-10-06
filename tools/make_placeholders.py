@@ -20,7 +20,7 @@ PH = os.path.join(ROOT, 'assets', 'placeholders')
 os.makedirs(PH, exist_ok=True)
 
 MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
-NAVY, NAVY2, CYAN, INK, ORANGE = "#0a1424", "#0e1c32", "#4fd1ff", "#eaf2fb", "#ff6a1f"
+NAVY, NAVY2, CYAN, INK, ORANGE = "#FFF1E7", "#F6E3D3", "#326080", "#1B3347", "#805232"  # paper, deeper paper, blue, ink, brown
 
 SIZES = {  # kind -> (w, h)
     'cover': (1600, 1000), 'wire': (1600, 1000), 'gallery': (1200, 900),
@@ -36,9 +36,9 @@ def esc(s):
 def frame(w, h, bg, fine_grid=False):
     out = [f'<rect width="{w}" height="{h}" fill="{bg}"/>',
            '<defs><pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">'
-           f'<path d="M40 0H0V40" fill="none" stroke="{CYAN}" stroke-opacity=".10"/></pattern>'
+           f'<path d="M40 0H0V40" fill="none" stroke="{CYAN}" stroke-opacity=".16"/></pattern>'
            '<pattern id="m" width="16" height="16" patternUnits="userSpaceOnUse">'
-           f'<path d="M16 0H0V16" fill="none" stroke="{CYAN}" stroke-opacity=".16"/></pattern></defs>',
+           f'<path d="M16 0H0V16" fill="none" stroke="{CYAN}" stroke-opacity=".22"/></pattern></defs>',
            f'<rect width="{w}" height="{h}" fill="url(#{"m" if fine_grid else "g"})"/>',
            f'<rect x="12" y="12" width="{w-24}" height="{h-24}" fill="none" stroke="{CYAN}" stroke-width="2"/>',
            f'<rect x="30" y="30" width="{w-60}" height="{h-60}" fill="none" stroke="{INK}" stroke-opacity=".35"/>']
@@ -87,7 +87,7 @@ def make_plain(fname, kind):
         parts = frame(w, h, NAVY, fine_grid=True) + cross(w, h, dash=True) + \
             label(w, h, fname, 'WIREFRAME STATE (shown until hover)', CYAN) + corner_tags(w, h, 'REV A', 'PLACEHOLDER')
     elif kind == 'cover':
-        parts = frame(w, h, '#143056') + cross(w, h) + \
+        parts = frame(w, h, '#B5D2E6') + cross(w, h) + \
             label(w, h, fname, 'FINISHED RENDER / PHOTO (shown on hover)') + corner_tags(w, h, 'REV A', 'PLACEHOLDER')
     elif kind == 'missing':
         parts = frame(w, h, NAVY2) + cross(w, h) + label(w, h, 'image not found', 'CHECK THE PATH IN projects.json') + corner_tags(w, h, 'REV A', 'MISSING')
@@ -156,9 +156,9 @@ def make_pdf(path):
 
 def make_favicon():
     with open(os.path.join(ROOT, 'assets', 'favicon.svg'), 'w') as f:
-        f.write('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="4" fill="#0a1424"/>'
-                '<g fill="none" stroke="#4fd1ff" stroke-width="1.6"><circle cx="16" cy="16" r="9"/></g>'
-                '<path d="M16 3v8M16 21v8M3 16h8M21 16h8" stroke="#eaf2fb" stroke-width="1.6"/><circle cx="16" cy="16" r="2.4" fill="#ff6a1f"/></svg>\n')
+        f.write('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="4" fill="#FFF1E7"/>'
+                '<g fill="none" stroke="#326080" stroke-width="1.8"><rect x="6" y="6" width="20" height="20" rx="1.5"/></g>'
+                '<path d="M6 13h20M13 6v20" stroke="#1B3347" stroke-width="1.6"/><circle cx="20" cy="20" r="3" fill="#805232"/></svg>\n')
 
 
 def main():
@@ -225,7 +225,7 @@ def main():
     for path, what, size, pages in rows:
         md.append(f'| `{path}` | {what} | {size} | {pages} |')
     md += ['', '## Text placeholders', '',
-           'Search the repo for `[` to find them all (they are highlighted in orange on the live site).', '',
+           'Search the repo for `[` to find them all (they are highlighted in brown on the live site).', '',
            '| Placeholder | Files (count) |', '|---|---|']
     for tok, where in found.items():
         md.append('| `' + tok + '` | ' + ', '.join(f'`{k}` ({v})' for k, v in where.items()) + ' |')
