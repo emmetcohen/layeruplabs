@@ -101,7 +101,7 @@ Everything on this page is currently a **placeholder**. To replace one, drop a f
 
 ## Text placeholders
 
-Search the repo for `[` to find them all (they are highlighted in orange on the live site).
+Search the repo for `[` to find them all (they are highlighted in brown on the live site).
 
 | Placeholder | Files (count) |
 |---|---|

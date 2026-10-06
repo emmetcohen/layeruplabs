@@ -28,7 +28,7 @@ python3 -m http.server 8000
 | `css/style.css` | All styling; palette is at the top |
 | `ASSETS_NEEDED.md` | Every placeholder, size, and the page it appears on |
 
-Placeholders in text look like `[ONE-LINE INTRO]` and are highlighted orange. Search the repo for `[` to find them.
+Placeholders in text look like `[ONE-LINE INTRO]` and are highlighted in brown. Search the repo for `[` to find them.
 
 ## Swap a placeholder image
 
@@ -67,7 +67,7 @@ Departments (names, blurbs, buttons like "Commission a piece") are in the `categ
 
 ## Change colors
 
-Edit the variables at the top of `css/style.css` (`--bg`, `--cyan`, `--accent`, …). Orange (`--accent`) is used only for buttons and highlights.
+Edit the variables at the top of `css/style.css` (`--bg`, `--cyan`, `--accent`, …). The palette is "Marina" (cream, light blue, blue, brown). Brown (`--accent`) is used only for buttons and highlights. The `--*-rgb` triplets must match the hex colors above them.
 
 ## Publish on GitHub Pages
 
@@ -88,5 +88,5 @@ mkdir /tmp/sub && ln -s "$PWD" /tmp/sub/portfolio && cd /tmp/sub && python3 -m h
 
 ## Behaviour notes
 - Intro animation plays once per browser session; skip with the button, Esc, Enter or a click. Skipped for `prefers-reduced-motion`.
-- Crosshair cursor shows on desktop (fine pointer) only. Z-axis readout: 0.05 mm of "height" per scrolled pixel, quantised to 0.20 mm layers.
+- Z-axis readout: 0.05 mm of "height" per scrolled pixel, quantised to 0.20 mm layers.
 - `prefers-reduced-motion` disables animation and page transitions.
