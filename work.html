@@ -3,44 +3,79 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Work — Emmet</title>
-<meta name="description" content="Every project by Emmet, filterable by department: modeling, optics, fabrication, illustration, lab notes and team.">
-<meta name="theme-color" content="#FFF1E7">
+<title>Work — Layer Up Labs</title>
+<meta name="description" content="Modeling, 3D printing, photography and illustration by Emmet of Layer Up Labs.">
+<meta name="theme-color" content="#f6f4ef">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=3">
-<script>
-  /* Play the intro only on the first page of a session (and not for reduced-motion users). */
-  (function () { try { if (!sessionStorage.getItem('ec-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('intro-on'); } catch (e) {} })();
-</script>
-<script src="js/core.js?v=3"></script>
-<script src="js/render.js?v=3" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
-<body data-page="work">
-<noscript><p style="padding:1rem;text-align:center;background:#805232;color:#FFF1E7;margin:0">This portfolio needs JavaScript to load its project data.</p></noscript>
-<main id="main" tabindex="-1">
-<div class="wrap">
-  <header class="page-head">
-    <p class="crumbs"><a href="index.html">Home</a><span aria-hidden="true">/</span>Work</p>
-    <div class="page-head__row"><div><p class="eyebrow">Drawing index</p><h1>Work</h1></div><span class="tag-rev">SHEET 2 OF 5 · REV A</span></div>
-    <div class="dim" aria-hidden="true"><i></i><span>EVERYTHING I MAKE</span><i></i></div>
-    <p class="page-head__lead"><span class="ph">[WORK PAGE INTRO]</span> Six departments, one drafting table. Pick a department, or filter every project below.</p>
-  </header>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="index.html">Layer Up <span>Labs</span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="work.html" aria-current="page">Work</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="commissions.html">Inquire</a>
+  </nav>
+</div></header>
+<main>
 
-  <section class="sec" aria-labelledby="dept-title">
-    <div class="sec-head"><div><p class="eyebrow">By department</p><h2 id="dept-title">Departments</h2></div></div>
-    <div class="grid grid--cats" id="dept-grid"><p class="result-count">Loading…</p></div>
-  </section>
+<section class="page-head"><div class="wrap">
+  <p class="eyebrow">Portfolio</p><h1>Work</h1>
+  <p class="lede">Things I&rsquo;ve modeled, printed, photographed and drawn.</p>
+</div></section>
+<section class="section" style="padding-top:2rem"><div class="wrap">
+  <div class="grid"><a class="card" href="piece-macaroni-earrings.html">
+      <div class="thumb"><img src="images/earrings_03.jpg.webp" alt="Pair of 3D-printed macaroni earrings on white marble" loading="lazy"></div>
+      <p class="tag">Fabrication · For sale</p>
+      <h3>Macaroni Earrings</h3>
+      <p class="sum">Modeled from scratch, printed light enough to forget you&rsquo;re wearing them.</p>
+    </a><a class="card" href="work.html">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Fabrication</p>
+      <h3>RC Car</h3>
+      <p class="sum">Chassis rebuilt across several failed versions.</p>
+    </a><a class="card" href="work.html">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Fabrication</p>
+      <h3>RC Battleship</h3>
+      <p class="sum">Printed in sections, assembled and finished by hand.</p>
+    </a><a class="card" href="work.html">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Modeling</p>
+      <h3>SD40-2 Locomotive</h3>
+      <p class="sum">A Santa Fe SD40-2 (number 5104), modeled in Blender and ZBrush.</p>
+    </a><a class="card" href="work.html">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Modeling</p>
+      <h3>Game Assets</h3>
+      <p class="sum">Commissioned models for an independent development team.</p>
+    </a><a class="card" href="work.html">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Illustration</p>
+      <h3>&ldquo;Frozen Peaks&rdquo;</h3>
+      <p class="sum">Digital artwork, shown at the Tampa Museum of Art.</p>
+    </a><a class="card" href="work.html">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Photography</p>
+      <h3>Photography</h3>
+      <p class="sum">People, landscapes and sports, mostly swimming.</p>
+    </a><a class="card" href="work.html">
+      <div class="thumb thumb--empty">Photo coming soon</div>
+      <p class="tag">Illustration</p>
+      <h3>AP 2-D Art</h3>
+      <p class="sum">Pieces from my AP 2-D Art portfolio.</p>
+    </a></div>
+</div></section>
 
-  <section class="sec" aria-labelledby="all-title">
-    <div class="sec-head"><div><p class="eyebrow">Parts list</p><h2 id="all-title">All projects</h2></div></div>
-    <div class="filters" id="filters" role="group" aria-label="Filter projects by department"></div>
-    <p class="result-count" id="result-count" role="status" aria-live="polite"></p>
-    <div class="grid" id="project-grid"></div>
-  </section>
-</div>
 </main>
+<footer class="site-footer"><div class="wrap">
+  <span>&copy; 2026 Layer Up Labs &middot; Lutz, Florida</span>
+  <span><a href="https://www.etsy.com/shop/LayerUpLabs">Etsy</a><a href="mailto:hello@layeruplabs.com">hello@layeruplabs.com</a><a href="assets/resume.pdf">R&eacute;sum&eacute;</a></span>
+</div></footer>
 </body>
 </html>

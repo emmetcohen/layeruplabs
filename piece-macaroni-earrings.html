@@ -1,131 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Macaroni Earrings — Layer Up Labs</title>
-<meta name="description" content="Lightweight 3D-printed macaroni earrings, modeled and printed by Layer Up Labs.">
+<meta name="description" content="3D-printed macaroni earrings by Layer Up Labs, $5 on Etsy.">
+<meta name="theme-color" content="#f6f4ef">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Newsreader:opsz,wght@6..72,300..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
-
-<!-- ================================================================
-     PIECE TEMPLATE
-     To add a new piece: copy this file, rename it (e.g. piece-rc-car.html),
-     then change the <title>, the headline, the paragraphs, the spec rows,
-     and the buy button. Delete the buy button if it isn't for sale.
-     ================================================================ -->
-
-<div class="zrail" aria-hidden="true">
-  <div class="zrail__mark">Z&nbsp;AXIS</div>
-  <div class="zrail__ticks"></div>
-  <div class="zrail__readout" id="z">0.00&nbsp;MM</div>
-</div>
-
-<div class="shell">
-<div class="wrap">
-
-  <nav class="nav">
-    <a class="nav__brand" href="index.html">Layer&nbsp;Up&nbsp;<span>Labs</span></a>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="index.html">Layer Up <span>Labs</span></a>
+  <nav class="nav" aria-label="Main">
     <a href="work.html">Work</a>
-    <a href="commissions.html">Commissions</a>
+    <a href="shop.html" aria-current="page">Shop</a>
     <a href="about.html">About</a>
-    <a href="https://www.etsy.com/shop/LayerUpLabs">Shop</a>
+    <a href="commissions.html">Inquire</a>
   </nav>
+</div></header>
+<main>
 
-  <p class="meta" style="margin-bottom:2rem;"><a href="work.html" style="text-decoration:none;">&larr; All work</a></p>
-
-  <section class="piece">
-
+<section class="section"><div class="wrap">
+  <p><a class="back" href="shop.html">&larr; Shop</a></p>
+  <div class="two" style="margin-top:1.5rem">
     <div>
-      <div class="piece__shot">
-        <img src="images/earrings_01.jpg.webp" alt="Pair of 3D-printed macaroni earrings with gold-tone ear wires, resting on a speckled sage-green ceramic dish, showing the ridged elbow-macaroni curve.">
-      </div>
-      <div class="piece__strip">
-        <div><img src="images/earrings_01.jpg.webp" alt="Pair of macaroni earrings on a speckled sage-green ceramic dish."></div>
-        <div><img src="images/earrings_03.jpg.webp" alt="Close-up of the macaroni earrings on white marble, angled to show the hollow tube opening and ridged print texture."></div>
-        <div><img src="images/earrings_02.jpg.webp" alt="A macaroni earring worn on a model's ear in profile, outdoors against green trees."></div>
+      <img src="images/earrings_01.jpg.webp" alt="Pair of 3D-printed macaroni earrings with gold-tone ear wires on a speckled sage-green ceramic dish">
+      <div class="gallery">
+        <img src="images/earrings_03.jpg.webp" alt="Macaroni earrings on white marble showing the hollow tube and ridged print texture" loading="lazy">
+        <img src="images/earrings_02.jpg.webp" alt="A macaroni earring worn in profile outdoors" loading="lazy">
       </div>
     </div>
-
     <div>
-      <span class="tag tag--sale">For sale</span>
-      <h1 style="font-size:clamp(2rem,4.6vw,3.2rem);margin-bottom:1.2rem;">Macaroni<br>Earrings</h1>
-
-      <p>
-        A piece of pasta, modeled properly — the curve, the ridges, the hollow —
-        then printed small and light enough that you stop noticing you have them on.
-      </p>
-      <p>
-        It started as a joke and turned into the first thing anyone bought.
-        Each pair comes off the plate, gets its supports cleaned off by hand,
-        and gets fitted with hypoallergenic hardware before it ships.
-      </p>
-
-      <div class="speclist">
-        <!-- EDIT: real specs. Keep rows short. -->
-        <div><span>Material</span><span>PLA</span></div>
-        <div><span>Modeled in</span><span>Blender</span></div>
-        <div><span>Hardware</span><span>Hypoallergenic hooks</span></div>
-        <div><span>Made in</span><span>Lutz, Florida</span></div>
-      </div>
-
-      <a class="btn btn--buy" href="https://www.etsy.com/listing/1758923458/3d-printed-pasta-macaroni-lightweight">
-        Buy on Etsy &mdash; $5
-      </a>
-      <p class="meta" style="margin-top:0.9rem;">Checkout, shipping and returns are handled by Etsy.</p>
+      <p class="eyebrow">For sale</p>
+      <h1 style="font-size:clamp(2.4rem,5vw,3.6rem)">Macaroni Earrings</h1>
+      <p style="margin-top:1.4rem">A piece of pasta, modeled properly (the curve, the ridges, the hollow), then printed small and light enough that you stop noticing you have them on.</p>
+      <p>Each pair comes off the plate, gets its supports cleaned off by hand, and is fitted with hypoallergenic hardware before it ships.</p>
+      <ul class="facts">
+        <li><span>Material</span><span>PLA</span></li>
+        <li><span>Modeled in</span><span>Blender</span></li>
+        <li><span>Hardware</span><span>Hypoallergenic hooks</span></li>
+        <li><span>Made in</span><span>Lutz, Florida</span></li>
+      </ul>
+      <p class="price">$5</p>
+      <div class="btns" style="margin-top:1rem"><a class="btn" href="https://www.etsy.com/listing/1758923458/3d-printed-pasta-macaroni-lightweight">Buy on Etsy</a></div>
+      <p class="note">Checkout, shipping and returns are handled by Etsy.</p>
     </div>
+  </div>
+</div></section>
 
-  </section>
-
-  <section class="section">
-    <div class="section__head"><h2>More Work</h2><a class="meta" href="work.html">See everything &rarr;</a></div>
-    <div class="grid">
-      <a class="card" href="piece-macaroni-earrings.html">
-        <div class="card__shot"></div>
-        <div class="card__body"><span class="tag">Build</span><h3>RC Car</h3>
-        <p class="card__note">Chassis rebuilt from printed parts.</p></div>
-      </a>
-      <a class="card" href="piece-macaroni-earrings.html">
-        <div class="card__shot"></div>
-        <div class="card__body"><span class="tag">Build</span><h3>RC Battleship</h3>
-        <p class="card__note">A long-run build in printed sections.</p></div>
-      </a>
-      <a class="card" href="piece-macaroni-earrings.html">
-        <div class="card__shot"></div>
-        <div class="card__body"><span class="tag">Commission</span><h3>Game Assets</h3>
-        <p class="card__note">Models made for an independent dev team.</p></div>
-      </a>
-    </div>
-  </section>
-
-  <footer class="foot">
-    <span class="meta">Layer Up Labs &middot; Lutz, Florida</span>
-    <span class="meta">
-      <a href="https://www.etsy.com/shop/LayerUpLabs">Etsy shop</a> &nbsp;/&nbsp;
-      <a href="mailto:hello@layeruplabs.com">Email</a>
-    </span>
-  </footer>
-
-</div>
-</div>
-
-<script>
-  (function () {
-    var out = document.getElementById('z');
-    if (!out || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var tick = function () {
-      var max = document.body.scrollHeight - window.innerHeight;
-      var mm = max > 0 ? (window.scrollY / max) * 148 : 0;
-      out.textContent = mm.toFixed(2) + '\u00A0MM';
-    };
-    window.addEventListener('scroll', tick, { passive: true });
-    tick();
-  })();
-</script>
-
+</main>
+<footer class="site-footer"><div class="wrap">
+  <span>&copy; 2026 Layer Up Labs &middot; Lutz, Florida</span>
+  <span><a href="https://www.etsy.com/shop/LayerUpLabs">Etsy</a><a href="mailto:hello@layeruplabs.com">hello@layeruplabs.com</a><a href="assets/resume.pdf">R&eacute;sum&eacute;</a></span>
+</div></footer>
 </body>
 </html>
