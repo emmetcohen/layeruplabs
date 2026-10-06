@@ -136,3 +136,31 @@ p { margin: 0 0 1.1rem; }
 }
 @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+
+/* Inner pages built from tiles */
+.bento > .t12 { grid-column: span 12; }
+.bento > .t8 { grid-column: span 8; }
+.bento > .t7 { grid-column: span 7; }
+.bento > .t6 { grid-column: span 6; }
+.bento > .t5 { grid-column: span 5; }
+.bento > .t4 { grid-column: span 4; }
+.bento > .tw { grid-column: span 12; }
+.bento { padding-top: 0; }
+.tile.head { display: block; }
+.tile.head h1 { font-size: clamp(2.6rem, 7vw, 5rem); }
+.tile.head .lede { margin: 1.2rem 0 0; }
+.tile-head { margin-bottom: 1.6rem; }
+.tile-head p { color: var(--muted); margin: .6rem 0 0; }
+.tile .card { background: var(--bg); border-color: transparent; }
+.tile .card:hover { border-color: var(--accent); }
+.tile .thumb { background: var(--card); }
+.tile .thumb--empty { background-color: var(--card); }
+.tile .step { background: var(--bg); border-color: transparent; }
+.tile.photo { padding: 10px; }
+.tile.row { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+.accent-tile { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.accent-tile .label { color: inherit; opacity: .8; }
+.addr.big { font: 700 1.5rem/1.2 var(--display); letter-spacing: -.02em; color: inherit; margin-top: 1.4rem; display: block; overflow-wrap: anywhere; text-decoration: none; }
+.moon.t5 { min-height: 300px; }
+.tile.about .tile-note { margin: 0; }
+@media (max-width: 880px) { .bento > .t8, .bento > .t7, .bento > .t6, .bento > .t5, .bento > .t4 { grid-column: span 12; } }
