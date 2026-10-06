@@ -27,13 +27,9 @@ p { margin: 0 0 1.1rem; }
 
 /* Header */
 .site-header { position: sticky; top: 0; z-index: 10; background: var(--bg); }
-.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 18px; }
-.brand { display: flex; align-items: center; gap: .65rem; font: 800 1.2rem/1 var(--display); letter-spacing: -.03em; text-decoration: none; }
-.brand em { font-style: normal; color: var(--accent); }
-.mark { width: 22px; height: 18px; display: block; background:
-  linear-gradient(var(--accent), var(--accent)) 0 0 / 100% 4px no-repeat,
-  linear-gradient(var(--accent), var(--accent)) 3px 7px / calc(100% - 6px) 4px no-repeat,
-  linear-gradient(var(--accent), var(--accent)) 6px 14px / calc(100% - 12px) 4px no-repeat; }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 24px 22px; }
+.brand { font: 800 1.25rem/1 var(--display); letter-spacing: -.03em; text-decoration: none; }
+.brand b { color: var(--accent); }
 .nav { display: flex; gap: 6px; flex-wrap: wrap; }
 .nav a { font: 500 .78rem/1 var(--mono); text-decoration: none; padding: 10px 14px; border-radius: 8px; color: var(--muted); transition: color .2s; }
 .nav a:hover { color: var(--ink); }
@@ -51,7 +47,7 @@ p { margin: 0 0 1.1rem; }
 .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; padding-bottom: 56px; }
 .tile { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 26px; min-width: 0; position: relative; overflow: hidden; }
 .name { grid-column: span 7; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; min-height: 420px; }
-.name h1 { font-size: clamp(2.8rem, 8.4vw, 6.2rem); line-height: .92; }
+.name h1 { font-size: clamp(3rem, 9vw, 6.6rem); line-height: .9; }
 .name h1 span { color: var(--accent); }
 .name .sub { max-width: 30rem; color: var(--muted); font-size: 1.05rem; margin: 22px 0 0; }
 .moon { grid-column: span 5; background: var(--dark); border-color: var(--dark); padding: 0; min-height: 420px; display: block; }
