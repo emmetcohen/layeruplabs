@@ -164,3 +164,10 @@ p { margin: 0 0 1.1rem; }
 .moon.t5 { min-height: 300px; }
 .tile.about .tile-note { margin: 0; }
 @media (max-width: 880px) { .bento > .t8, .bento > .t7, .bento > .t6, .bento > .t5, .bento > .t4 { grid-column: span 12; } }
+
+/* Photo galleries */
+.gallery { columns: 2 320px; column-gap: 14px; }
+.gallery a { display: block; margin-bottom: 14px; break-inside: avoid; }
+.gallery img { width: 100%; border-radius: 14px; transition: opacity .2s; }
+.gallery a:hover img { opacity: .92; }
+.recog li span { display: block; }
