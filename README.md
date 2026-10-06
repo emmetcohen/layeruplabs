@@ -2,7 +2,7 @@
 
 Plain HTML + one stylesheet (`style.css`). No build step.
 
-- Pages: `index.html`, `work.html`, `shop.html`, `about.html`, `commissions.html` (Inquire), `piece-macaroni-earrings.html`
+- Pages: `index.html`, `work.html`, `shop.html`, `about.html`, `commissions.html` (Inquire)
 - Colors and fonts: variables at the top of `style.css`
 - Photos: put files in `images/`. For a card that says "Photo coming soon", replace
   `<div class="thumb thumb--empty">Photo coming soon</div>` with
