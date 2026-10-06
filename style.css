@@ -1,5 +1,5 @@
 /* Layer Up Labs — one stylesheet for the whole site.
-   Colors and fonts are the variables below. Light and dark follow the visitor's device setting. */
+   Colors and fonts are the variables below. The site is always light. */
 :root {
   --bg: #e9ecf1; --card: #ffffff; --ink: #0f1720; --muted: #5d6877; --line: #d5dae2;
   --accent: #2742ff; --accent-ink: #ffffff; --dark: #0b0f14; --dark-ink: #e9edf2;
@@ -7,10 +7,8 @@
   --mono: "DM Mono", ui-monospace, Menlo, monospace;
   --body: system-ui, -apple-system, "Segoe UI", sans-serif;
   --r: 22px; --max: 1160px;
+  color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root {
-  --bg: #0c1016; --card: #151b24; --ink: #e8edf4; --muted: #8f9aab; --line: #263040;
-  --accent: #8393ff; --accent-ink: #0c1016; color-scheme: dark; } }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1rem/1.65 var(--body); -webkit-font-smoothing: antialiased; }
