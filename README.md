@@ -1,63 +1,92 @@
-# Layer Up Labs — site guide
+# Emmet — portfolio
 
-Plain HTML and CSS. No build step, no framework, no dependencies.
-Open any `.html` file in a browser to see it. Edit it in any text editor.
+A static "drafting table / blueprint" portfolio. Plain HTML, CSS and vanilla JS — **no build step, no npm**.
+The only external code is Google Fonts and (only if you add a 3D model) `<model-viewer>` pinned to `3.5.0` on jsDelivr.
 
-## Files
+## Preview locally
 
-| File | What it is |
-|---|---|
-| `index.html` | Home page |
-| `work.html` | The full list of pieces |
-| `piece-macaroni-earrings.html` | A single piece — also the template for new ones |
-| `commissions.html` | Custom work |
-| `about.html` | Emmet's page |
-| `style.css` | All the styling for every page |
-| `images/` | Create this folder and put photos in it |
+The site fetches `projects.json`, so it must be served over HTTP (double-clicking `index.html` won't work):
 
-Anywhere you see `<!-- EDIT: ... -->` there's something to change.
-
-## Adding photos
-
-1. Make a folder called `images` next to the HTML files.
-2. Drop the photo in — name it something simple like `earrings.jpg`.
-3. Find the empty `<div class="card__shot"></div>` for that piece and put the photo inside it:
-
-```html
-<div class="card__shot">
-  <img src="images/earrings.jpg" alt="Macaroni earrings">
-</div>
+```bash
+cd emmet-portfolio
+python3 -m http.server 8000
+# open http://localhost:8000
 ```
 
-The `alt` text describes the photo for screen readers and for anyone whose
-image doesn't load. Write what's in the picture.
+## Where things live
 
-Until a photo is added, the slot shows a layer-line texture on purpose — an
-empty slot looks intentional rather than broken.
+| Path | What |
+|---|---|
+| `index.html`, `work.html`, `about.html` | Pages (home/about text lives here) |
+| `category.html?c=ID`, `project.html?p=ID` | Templates filled from JSON — one page per category / project |
+| `projects.json` | **All categories and projects** |
+| `site.json` | Email, Layer Up Labs / Etsy / social links |
+| `assets/images/` | Your real images (same filename as the placeholder) |
+| `assets/placeholders/` | Blueprint placeholder SVGs (auto-used when a real image is missing) |
+| `assets/models/model.glb` | Drop-in 3D model for the SD40-2 viewer |
+| `assets/resume.pdf` | Replace with your résumé |
+| `css/style.css` | All styling; palette is at the top |
+| `ASSETS_NEEDED.md` | Every placeholder, size, and the page it appears on |
 
-## Adding a new piece
+Placeholders in text look like `[ONE-LINE INTRO]` and are highlighted orange. Search the repo for `[` to find them.
 
-1. Copy `piece-macaroni-earrings.html` and rename it, e.g. `piece-rc-car.html`.
-2. Change the `<title>`, the headline, the paragraphs, and the spec rows.
-3. If it isn't for sale, delete the `btn--buy` link and the line under it.
-4. In `work.html` and `index.html`, copy one `<a class="card">` block and point
-   its `href` at your new file.
+## Swap a placeholder image
 
-## Changing colors
+Drop a file with the **same name** into `assets/images/` (see `ASSETS_NEEDED.md`). The site tries the real file first and falls back to the placeholder SVG. No code changes.
+- Hero portrait: `portrait.jpg` (real) and `portrait-wire.jpg` (wireframe). If you only supply `portrait.jpg`, a cyan edge-detect wireframe is generated automatically.
+- A project tile with a `"wire"` image swaps wireframe → finished render on hover. Delete the `"wire"` line to get an automatic blueprint-tint effect instead.
+- 3D model: add `assets/models/model.glb`; until then the page shows "Model coming soon".
 
-Everything lives at the top of `style.css` under `:root`. Change a hex value
-there and it updates everywhere. `--perimeter` is the teal, `--infill` is the
-orange — both borrowed from how slicer software color-codes a print.
+## Add a project
 
-## Before it goes live
+Add an object to `projects` in `projects.json` (copy an existing one):
 
-- [ ] Replace `hello@layeruplabs.com` with the real address (it appears on every page)
-- [ ] Add real photos, especially on the About page
-- [ ] Rewrite the About page in Emmet's own words — the current text is a starting draft
-- [ ] Check the Etsy links still point at live listings
+```json
+{
+  "id": "my-project",            // unique, URL-safe; page is project.html?p=my-project
+  "title": "My Project",
+  "category": "fabrication",     // modeling | optics | fabrication | illustration | lab-notes | team
+  "group": "people",             // optics only: people | landscapes | sports
+  "date": "2025-03",             // YYYY-MM
+  "tools": ["Blender", "FDM printing"],
+  "summary": "One line for the tile.",
+  "description": "2–3 sentences on the idea.",
+  "tolerances": { "wentWrong": "What failed.", "learned": "What I learned." },
+  "cover": "assets/images/my-project-cover.jpg",
+  "coverAlt": "Describe the cover photo",
+  "wire": "assets/images/my-project-wire.jpg",   // optional
+  "gallery": [ { "src": "assets/images/my-project-1.jpg", "alt": "Describe it" } ],
+  "featured": true,              // optional: show on the home page (first 6)
+  "model": "assets/models/model.glb",            // optional: 3D viewer
+  "links": [ { "label": "Shop", "url": "https://..." } ]   // optional
+}
+```
 
-## Putting it online
+Optional: run `python3 tools/make_placeholders.py` to generate placeholders for the new files and refresh `ASSETS_NEEDED.md`.
+Departments (names, blurbs, buttons like "Commission a piece") are in the `categories` array of the same file.
 
-Any static host works and most are free for a site this size — Netlify,
-Cloudflare Pages, or GitHub Pages. Drag the folder in, point the
-layeruplabs.com domain at it, done.
+## Change colors
+
+Edit the variables at the top of `css/style.css` (`--bg`, `--cyan`, `--accent`, …). Orange (`--accent`) is used only for buttons and highlights.
+
+## Publish on GitHub Pages
+
+1. Create an empty repo on github.com (e.g. `portfolio`), no README/license.
+2. In this folder:
+   ```bash
+   git remote add origin https://github.com/YOUR-USERNAME/portfolio.git
+   git push -u origin main
+   ```
+3. On GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main`, folder `/ (root)` → Save**.
+4. After a minute the site is live at `https://YOUR-USERNAME.github.io/portfolio/`.
+
+All paths are relative, so it works from that subpath or a custom domain root. To test a subpath locally:
+```bash
+mkdir /tmp/sub && ln -s "$PWD" /tmp/sub/portfolio && cd /tmp/sub && python3 -m http.server 8000
+# open http://localhost:8000/portfolio/
+```
+
+## Behaviour notes
+- Intro animation plays once per browser session; skip with the button, Esc, Enter or a click. Skipped for `prefers-reduced-motion`.
+- Crosshair cursor shows on desktop (fine pointer) only. Z-axis readout: 0.05 mm of "height" per scrolled pixel, quantised to 0.20 mm layers.
+- `prefers-reduced-motion` disables animation and page transitions.

@@ -1,112 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About — Layer Up Labs</title>
-<meta name="description" content="Layer Up Labs is a one-person 3D design and print studio run by Emmet in Lutz, Florida.">
+<title>About — Emmet</title>
+<meta name="description" content="Emmet’s story: a high school senior in Lutz, Florida who got a 3D printer at twelve and is headed toward mechanical engineering.">
+<meta name="theme-color" content="#0a1424">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Newsreader:opsz,wght@6..72,300..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script>
+  /* Play the intro only on the first page of a session (and not for reduced-motion users). */
+  (function () { try { if (!sessionStorage.getItem('ec-intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('intro-on'); } catch (e) {} })();
+</script>
+<script src="js/core.js"></script>
+<script src="js/render.js" defer></script>
 </head>
-<body>
-
-<div class="zrail" aria-hidden="true">
-  <div class="zrail__mark">Z&nbsp;AXIS</div>
-  <div class="zrail__ticks"></div>
-  <div class="zrail__readout" id="z">0.00&nbsp;MM</div>
-</div>
-
-<div class="shell">
+<body data-page="about">
+<noscript><p style="padding:1rem;text-align:center;background:#ff6a1f;color:#0a1424;margin:0">This portfolio needs JavaScript to load its project data.</p></noscript>
+<main id="main" tabindex="-1">
 <div class="wrap">
-
-  <nav class="nav">
-    <a class="nav__brand" href="index.html">Layer&nbsp;Up&nbsp;<span>Labs</span></a>
-    <a href="work.html">Work</a>
-    <a href="commissions.html">Commissions</a>
-    <a href="about.html" aria-current="page">About</a>
-    <a href="https://www.etsy.com/shop/LayerUpLabs">Shop</a>
-  </nav>
-
-  <header class="hero" style="padding-bottom:2rem;">
-    <h1 style="font-size:clamp(2.2rem,6vw,4.2rem);margin-bottom:1.4rem;">About</h1>
-    <p class="lede">
-      Layer Up Labs is one person, a few printers, and a long habit of
-      making things that didn't exist before.
-    </p>
+  <header class="page-head">
+    <p class="crumbs"><a href="index.html">Home</a><span aria-hidden="true">/</span>About</p>
+    <div class="page-head__row"><div><p class="eyebrow">Designer’s notes</p><h1>About</h1></div><span class="tag-rev">SHEET 5 OF 5 · REV A</span></div>
+    <div class="dim" aria-hidden="true"><i></i><span>SCALE 1:1</span><i></i></div>
   </header>
 
-  <section class="section">
-    <div class="piece">
-      <div>
-        <div class="piece__shot">
-          <img src="images/emmet.jpeg" alt="Emmet Cohen smiling and giving two thumbs up in a gallery, standing next to his framed digital artwork &quot;Frozen Peaks.&quot;">
-        </div>
-      </div>
+  <div class="about">
+    <figure class="tblock crop">
+      <div class="tblock__img"><img src="assets/images/about.jpg" alt="Portrait of Emmet" width="800" height="1000" loading="lazy" decoding="async"></div>
+      <figcaption>
+        <table>
+          <tr><th scope="row">Designer</th><td>Designer: Emmet</td></tr>
+          <tr><th scope="row">Scale</th><td>Scale 1:1</td></tr>
+          <tr><th scope="row">Sheet</th><td>Sheet 1 of 1</td></tr>
+          <tr><th scope="row">Drawing</th><td>Self-portrait</td></tr>
+          <tr><th scope="row">Rev</th><td>A</td></tr>
+        </table>
+      </figcaption>
+    </figure>
 
-      <div>
-        <!-- ============================================================
-             EDIT: this whole section. Written in Emmet's voice, first person.
-             Keep it specific and unpolished rather than promotional.
-             ============================================================ -->
-        <p>
-          I'm Emmet. I got a 3D printer when I was twelve, and the first thing I
-          designed on it was a fidget spinner in Tinkercad. It was not good.
-        </p>
-        <p>
-          What kept me going was the part that still gets me: you make a shape on a
-          screen, and a few hours later you can hold it. That gap between the model
-          and the object is where all the interesting problems live — wall thickness,
-          orientation, where a part will fail under load, how to hide a seam.
-        </p>
-        <p>
-          Since then I've moved from Tinkercad into Blender and ZBrush, built and
-          rebuilt an RC car out of printed parts, made a battleship in sections,
-          and taken on commissioned modeling work for an independent game studio.
-          Layer Up Labs is where that work lives.
-        </p>
-        <p>
-          I'm based in Lutz, Florida, and I'm headed toward mechanical engineering —
-          which is, more or less, the same question at a larger scale.
-        </p>
+    <div class="story">
+      <h2>The short version</h2>
+      <p class="lead"><span class="ph">[BIO PARAGRAPH 1]</span> I got my first 3D printer when I was twelve. Pretty quickly I figured out that the interesting problems live in the gap between the model and the object.</p>
+      <p><span class="ph">[BIO PARAGRAPH 2]</span> Tell the story of what you built first, what broke, and what that taught you. Keep it specific: a part number, a failed print, a number you measured.</p>
+      <p><span class="ph">[BIO PARAGRAPH 3]</span> Where you’re headed: mechanical engineering, and why.</p>
 
-        <div class="speclist">
-          <div><span>Modeling</span><span>Blender, ZBrush</span></div>
-          <div><span>Also</span><span>Adobe Creative Suite</span></div>
-          <div><span>Printing</span><span>FDM &amp; resin</span></div>
-          <div><span>Since</span><span>2023</span></div>
-        </div>
+      <h2>Specifications</h2>
+      <dl class="facts">
+        <div><dt>Based</dt><dd>Lutz, Florida</dd></div>
+        <div><dt>Heading toward</dt><dd>Mechanical engineering</dd></div>
+        <div><dt>Swim</dt><dd>Varsity team captain · four-year district qualifier</dd></div>
+        <div><dt>Photography club</dt><dd>Co-founder · about 70 members</dd></div>
+        <div><dt>Service</dt><dd>300+ community service hours</dd></div>
+        <div><dt>Software</dt><dd>Blender, ZBrush, Adobe Creative Suite</dd></div>
+        <div><dt>Printing</dt><dd>FDM &amp; resin, since 2023</dd></div>
+        <div><dt>Shown at</dt><dd>Tampa Museum of Art · St. Joseph’s Hospital</dd></div>
+        <div><dt>In progress</dt><dd>AP 2-D Art portfolio</dd></div>
+        <div><dt>Studio</dt><dd><a href="commissions.html">Layer Up Labs</a>, my print business</dd></div>
+      </dl>
 
-        <a class="btn" href="mailto:hello@layeruplabs.com">Get in touch</a>
+      <div class="btn-row">
+        <a class="btn" href="assets/resume.pdf" download>Download résumé (PDF)</a>
+        <a class="btn btn--ghost" href="mailto:hello@layeruplabs.com">Say hello</a>
+        <a class="btn btn--ghost" href="work.html">See the work</a>
       </div>
     </div>
-  </section>
-
-  <footer class="foot">
-    <span class="meta">Layer Up Labs &middot; Lutz, Florida</span>
-    <span class="meta">
-      <a href="https://www.etsy.com/shop/LayerUpLabs">Etsy shop</a> &nbsp;/&nbsp;
-      <a href="mailto:hello@layeruplabs.com">Email</a>
-    </span>
-  </footer>
-
+  </div>
 </div>
-</div>
-
-<script>
-  (function () {
-    var out = document.getElementById('z');
-    if (!out || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var tick = function () {
-      var max = document.body.scrollHeight - window.innerHeight;
-      var mm = max > 0 ? (window.scrollY / max) * 148 : 0;
-      out.textContent = mm.toFixed(2) + '\u00A0MM';
-    };
-    window.addEventListener('scroll', tick, { passive: true });
-    tick();
-  })();
-</script>
-
+</main>
 </body>
 </html>
