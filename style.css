@@ -38,6 +38,7 @@ p { margin: 0 0 1.1rem; }
 .btn { display: inline-block; font: 500 .85rem/1 var(--mono); text-decoration: none; padding: 14px 20px; border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); transition: transform .2s; }
 .btn:hover { transform: translateY(-2px); }
 .btn--ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn--ghost[aria-current] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .more { font: 500 .8rem/1.4 var(--mono); text-decoration: none; color: var(--accent); }
 .more:hover { text-decoration: underline; }
 
@@ -164,6 +165,9 @@ p { margin: 0 0 1.1rem; }
 .tile-head p { color: var(--muted); margin: .6rem 0 0; }
 .tile .card { background: var(--bg); border-color: transparent; }
 .tile .card:hover { border-color: var(--accent); }
+#project { outline: none; }
+#project:empty, #overview[hidden] { display: none; }
+#project .head .label { margin-top: 1.6rem; }
 .tile .thumb { background: var(--card); }
 .tile .thumb--empty { background-color: var(--card); }
 .tile .step { background: var(--bg); border-color: transparent; }
