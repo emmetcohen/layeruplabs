@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -34,9 +34,20 @@
       <div class="btns"><a class="btn" href="work.html">See the work</a><a class="btn btn--ghost" href="shop.html">Shop prints</a></div>
     </div>
   </section>
-  <a class="tile moon" href="work.html#photography" aria-label="See the photography">
-    <img src="images/moon.jpg" alt="Black-and-white photo of a full moon with three birds flying across it">
-  </a>
+  <section class="tile photos" aria-label="Photography">
+    <a class="slide is-active" href="photography-nature.html"><img src="images/moon.jpg" alt="Black-and-white photo of a full moon with three birds flying across it"></a>
+    <a class="slide" href="photography-music.html"><img src="images/music-1.jpg" alt="A guitarist in a blue shirt plays a blue Ibanez guitar, lit by a single shaft of light against a black background"></a>
+    <a class="slide" href="photography-cars.html"><img src="images/cars-2.jpg" alt="Close-up of the front of a white sports car with its door raised and an orange headlight glowing"></a>
+    <a class="slide" href="photography-marching-band.html"><img src="images/band-2.jpg" alt="A band member in a black uniform and white sash raises both white-gloved hands against a deep blue night sky"></a>
+    <a class="slide" href="photography-places.html"><img src="images/places-5.jpg" alt="A clock tower seen through yellow autumn leaves"></a>
+    <div class="dots">
+      <button type="button" aria-label="Show photo 1 of 5" aria-current="true"></button>
+      <button type="button" aria-label="Show photo 2 of 5"></button>
+      <button type="button" aria-label="Show photo 3 of 5"></button>
+      <button type="button" aria-label="Show photo 4 of 5"></button>
+      <button type="button" aria-label="Show photo 5 of 5"></button>
+    </div>
+  </section>
   <section class="tile about">
     <img src="images/emmet.jpeg" alt="Emmet smiling and giving two thumbs up beside his framed digital artwork at a gallery">
     <div><span class="label">About</span><h2>Hi, I&rsquo;m Emmet.</h2><p>I got my first 3D printer at twelve. Layer Up Labs is where I design in Blender and ZBrush, print on an FDM printer and finish by hand.</p><a class="more" href="about.html">More about me &rarr;</a></div>
@@ -74,5 +85,13 @@
   <span>&copy; 2026 Layer Up Labs &middot; Lutz, Florida</span>
   <span><a href="mailto:layeruplabs@gmail.com">layeruplabs@gmail.com</a></span>
 </div></footer>
+<script>
+  const slides = document.querySelectorAll('.photos .slide');
+  const dots = document.querySelectorAll('.photos .dots button');
+  dots.forEach((dot, i) => dot.addEventListener('click', () => {
+    slides.forEach((slide, j) => slide.classList.toggle('is-active', j === i));
+    dots.forEach((d, j) => j === i ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current'));
+  }));
+</script>
 </body>
 </html>
