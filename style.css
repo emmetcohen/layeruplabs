@@ -100,6 +100,7 @@ p { margin: 0 0 1.1rem; }
 .cert .label { margin-bottom: .7rem; }
 .cert h2 { font-size: clamp(1.3rem, 4vw, 1.7rem); }
 .cert p { margin: .4rem 0 0; color: var(--muted); }
+.cert .more { display: inline-block; margin-top: .8rem; }
 .recog { grid-column: span 6; }
 .recog ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0 28px; }
 .recog.t12 ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
