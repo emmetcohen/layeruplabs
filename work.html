@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=30">
+<link rel="stylesheet" href="style.css?v=32">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -45,6 +45,14 @@
 <template data-project="#illustration/st-josephs-north" data-title="St. Joseph&rsquo;s Hospital North — Layer Up Labs"><section class="tile head t12 project-intro"><div><h2>St. Joseph&rsquo;s Hospital North</h2><p class="lede">Digital artwork created for the infusion clinic at St. Joseph&rsquo;s Hospital North.</p></div><div><span class="label">Details</span><ul class="facts" style="margin-bottom:0"><li><span>Medium</span><span>Digital art</span></li><li><span>Location</span><span>Infusion clinic, St. Joseph&rsquo;s Hospital North</span></li><li><span>Display</span><span>Year-long, 2026</span></li></ul></div></section><section class="tile t6 photo"><img src="images/st-josephs-framed.jpg" alt="Emmet smiling beside the large framed digital artwork of a looping blue ring, resting on a paint-covered table in an art room" style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px"></section><section class="tile t6 photo"><img src="images/st-josephs-infusion-clinic.jpg" alt="Emmet giving two thumbs up beside an infusion chair, in front of the framed artwork hanging on the clinic wall" style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 20%;border-radius:14px"></section></template>
 <template data-project="#illustration/ap-2d-art" data-title="AP 2-D Art — Layer Up Labs"><section class="tile head t12 project-intro"><div><h2>AP 2-D Art</h2><p class="lede">Pieces from my AP 2-D Art portfolio.</p></div><div><span class="label">Details</span><ul class="facts" style="margin-bottom:0"><li><span>Medium</span><span>Digital and traditional art</span></li><li><span>Course</span><span>AP 2-D Art</span></li></ul></div></section><section class="tile t12 photo"><div class="thumb thumb--empty proj-hero">Main photo coming soon</div></section><section class="tile t12"><div class="tile-head"><h2>Process</h2></div><div class="grid"><div class="thumb thumb--empty">Process photo coming soon</div><div class="thumb thumb--empty">Process photo coming soon</div><div class="thumb thumb--empty">Process photo coming soon</div></div></section></template>
 </main>
+<dialog class="lightbox" aria-label="Photo viewer">
+  <div class="lightbox-track"></div>
+  <svg hidden><symbol id="chevron" viewBox="0 0 13 24"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M1.5 1.5 11.5 12l-10 10.5"/></symbol></svg>
+  <button type="button" class="arrow arrow--prev" aria-label="Previous photo"><svg width="13" height="24" aria-hidden="true"><use href="#chevron"/></svg></button>
+  <button type="button" class="arrow arrow--next" aria-label="Next photo"><svg width="13" height="24" aria-hidden="true"><use href="#chevron"/></svg></button>
+  <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+  <p class="lightbox-count" aria-live="polite"></p>
+</dialog>
 <footer class="site-footer"><div class="wrap">
   <span>&copy; 2026 Layer Up Labs &middot; Lutz, Florida</span>
   <span><a href="mailto:layeruplabs@gmail.com">layeruplabs@gmail.com</a></span>
@@ -66,7 +74,6 @@
     const inHash = location.hash.slice(1).split('/')[0];
     const name = [...tiles].some((a) => a.hash === `#${inHash}`) ? inHash : 'printing';
     const projects = templates.filter((t) => t.dataset.project.startsWith(`#${name}/`));
-    scrollTo(0, 0);
     const current = projects.find((t) => t.dataset.project === location.hash) || projects[0];
     tiles.forEach((a) => a.hash === `#${name}` ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'));
     panel.replaceChildren(current.content.cloneNode(true));
@@ -89,6 +96,54 @@
     panel.prepend(nav);
     panel.focus({ preventScroll: true });
   };
+
+  const lightbox = document.querySelector('.lightbox');
+  const track = lightbox.querySelector('.lightbox-track');
+  const count = lightbox.querySelector('.lightbox-count');
+  let shown = 0;
+  let settle;
+  const mark = (i) => {
+    shown = i;
+    count.textContent = `${i + 1} / ${track.children.length}`;
+  };
+  const go = (i, behavior) => {
+    mark((i + track.children.length) % track.children.length);
+    track.scrollTo({ left: shown * track.clientWidth, behavior });
+  };
+  // Gallery links still point at the full-size files, so they work without JavaScript.
+  panel.addEventListener('click', (e) => {
+    const a = e.target.closest('.gallery a');
+    if (!a) return;
+    e.preventDefault();
+    const links = [...a.closest('.gallery').querySelectorAll('a')];
+    track.replaceChildren(...links.map((l) => {
+      const slide = document.createElement('div');
+      const img = document.createElement('img');
+      slide.className = 'lightbox-slide';
+      img.src = l.href;
+      img.alt = l.querySelector('img').alt;
+      slide.append(img);
+      return slide;
+    }));
+    lightbox.showModal();
+    go(links.indexOf(a), 'instant');
+  });
+  lightbox.querySelector('.arrow--prev').addEventListener('click', () => go(shown - 1));
+  lightbox.querySelector('.arrow--next').addEventListener('click', () => go(shown + 1));
+  lightbox.querySelector('.lightbox-close').addEventListener('click', () => lightbox.close());
+  lightbox.addEventListener('click', (e) => {
+    if (e.target.classList.contains('lightbox-slide')) lightbox.close();
+  });
+  lightbox.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') go(shown - 1);
+    if (e.key === 'ArrowRight') go(shown + 1);
+  });
+  lightbox.addEventListener('close', () => track.replaceChildren());
+  // Swiping scrolls the track natively; update the count once it comes to rest.
+  track.addEventListener('scroll', () => {
+    clearTimeout(settle);
+    settle = setTimeout(() => mark(Math.round(track.scrollLeft / track.clientWidth)), 100);
+  });
 
   addEventListener('hashchange', render);
   render();
