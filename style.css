@@ -60,12 +60,19 @@ p { margin: 0 0 1.1rem; }
 .arrow--prev svg { transform: scaleX(-1); }
 .arrow--next { right: 4px; }
 .arrow:hover { opacity: .55; }
-.dots { position: absolute; left: 50%; bottom: 13px; transform: translateX(-50%); display: flex; filter: drop-shadow(0 0 3px rgba(0,0,0,.8)); }
+.dots { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); display: flex; padding: 0 6px; border-radius: 999px; background: rgba(11,15,20,.4); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; transition: width .2s; }
 .dots button::before { content: ""; width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.7); transition: width .2s, background .2s; }
 .dots button:hover::before { background: #fff; }
 .dots button[aria-current] { width: 38px; }
 .dots button[aria-current]::before { width: 28px; background: #fff; }
+.photos .arrow { width: 40px; height: 40px; margin-top: -20px; border-radius: 50%; background: rgba(11,15,20,.4); filter: none; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background .2s; }
+.photos .arrow:hover { opacity: 1; background: rgba(11,15,20,.65); }
+.photos .arrow svg { width: 10px; height: 18px; }
+.photos .arrow--prev { left: 12px; }
+.photos .arrow--prev svg { margin-right: 2px; }
+.photos .arrow--next { right: 12px; }
+.photos .arrow--next svg { margin-left: 2px; }
 .about { grid-column: span 6; padding: 0; display: flex; flex-direction: column; }
 .about img { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: top; }
 .about div { padding: 22px 26px 26px; display: grid; gap: 10px; }
