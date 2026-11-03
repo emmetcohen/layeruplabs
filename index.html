@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20">
+<link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -33,14 +33,16 @@
     </div>
   </section>
   <section class="tile photos" aria-label="Photography">
-    <div class="slide is-active"><img src="images/moon.jpg" alt="Black-and-white photo of a full moon with three birds flying across it"></div>
+    <div class="slides">
+    <div class="slide"><img src="images/moon.jpg" alt="Black-and-white photo of a full moon with three birds flying across it"></div>
     <div class="slide"><img src="images/music-1.jpg" alt="A guitarist in a blue shirt plays a blue Ibanez guitar, lit by a single shaft of light against a black background"></div>
     <div class="slide"><img src="images/cars-2.jpg" alt="Close-up of the front of a white sports car with its door raised and an orange headlight glowing"></div>
     <div class="slide"><img src="images/band-2.jpg" alt="A band member in a black uniform and white sash raises both white-gloved hands against a deep blue night sky"></div>
     <div class="slide"><img src="images/places-5.jpg" alt="A clock tower seen through yellow autumn leaves"></div>
-    <svg hidden><symbol id="arrow-dither" viewBox="0 0 15 11"><path fill="currentColor" shape-rendering="crispEdges" d="M6 0h1v1h-1zM7 0h1v1h-1zM8 0h1v1h-1zM9 0h1v1h-1zM7 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM8 2h1v1h-1zM9 2h1v1h-1zM10 2h1v1h-1zM11 2h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM1 5h1v1h-1zM3 5h1v1h-1zM5 5h1v1h-1zM7 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM8 6h1v1h-1zM9 6h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1zM8 8h1v1h-1zM9 8h1v1h-1zM10 8h1v1h-1zM11 8h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1z"/></symbol></svg>
-    <button type="button" class="arrow arrow--prev" aria-label="Previous photo"><svg width="15" height="11" aria-hidden="true"><use href="#arrow-dither"/></svg></button>
-    <button type="button" class="arrow arrow--next" aria-label="Next photo"><svg width="15" height="11" aria-hidden="true"><use href="#arrow-dither"/></svg></button>
+    </div>
+    <svg hidden><symbol id="chevron" viewBox="0 0 13 24"><path fill="none" stroke="currentColor" stroke-width="1.5" d="M1.5 1.5 11.5 12l-10 10.5"/></symbol></svg>
+    <button type="button" class="arrow arrow--prev" aria-label="Previous photo"><svg width="13" height="24" aria-hidden="true"><use href="#chevron"/></svg></button>
+    <button type="button" class="arrow arrow--next" aria-label="Next photo"><svg width="13" height="24" aria-hidden="true"><use href="#chevron"/></svg></button>
     <div class="dots">
       <button type="button" aria-label="Show photo 1 of 5" aria-current="true"></button>
       <button type="button" aria-label="Show photo 2 of 5"></button>
@@ -77,17 +79,26 @@
   <span><a href="mailto:layeruplabs@gmail.com">layeruplabs@gmail.com</a></span>
 </div></footer>
 <script>
-  const slides = document.querySelectorAll('.photos .slide');
+  const track = document.querySelector('.photos .slides');
   const dots = document.querySelectorAll('.photos .dots button');
   let current = 0;
+  let settle;
+  const mark = (i) => {
+    current = i;
+    dots.forEach((d, j) => j === i ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current'));
+  };
   const show = (i) => {
-    current = (i + slides.length) % slides.length;
-    slides.forEach((slide, j) => slide.classList.toggle('is-active', j === current));
-    dots.forEach((d, j) => j === current ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current'));
+    mark((i + dots.length) % dots.length);
+    track.scrollTo({ left: current * track.clientWidth });
   };
   dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
   document.querySelector('.photos .arrow--prev').addEventListener('click', () => show(current - 1));
   document.querySelector('.photos .arrow--next').addEventListener('click', () => show(current + 1));
+  // Swiping scrolls the track natively; update the dots once it comes to rest.
+  track.addEventListener('scroll', () => {
+    clearTimeout(settle);
+    settle = setTimeout(() => mark(Math.round(track.scrollLeft / track.clientWidth)), 100);
+  });
 </script>
 </body>
 </html>
