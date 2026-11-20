@@ -281,3 +281,7 @@ button.btn { cursor: pointer; }
 .book-cta h2 { margin-bottom: .5rem; }
 .book-cta p { color: var(--muted); margin: 0; }
 #book { scroll-margin-top: 24px; }
+.ig-tile { text-decoration: none; transition: border-color .2s; }
+.ig-tile:hover { border-color: var(--accent); }
+.ig-tile h2 { margin-bottom: .8rem; }
+.tile-head p a { color: var(--accent); }
