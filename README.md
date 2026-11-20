@@ -9,7 +9,7 @@ Plain HTML + one stylesheet (`style.css`). No build step.
   - Linked from every page's menu ("Book"), the blue banner on the home page, and a
     "Book a session" box under every Photography set on the Work page
     (wording is in the `book-cta` template in `work.html`).
-  - Prices: replace each `$___` in the Services section of `book/index.html`.
+  - Prices: the "Starting at" amounts are in the Services section of `book/index.html`.
   - Booking form: opens the visitor's email app; see the comment above it to switch to Formspree.
   - `photography/` just forwards old links to Work > Photography.
 - Colors and fonts: variables at the top of `style.css`
