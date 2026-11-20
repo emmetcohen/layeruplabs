@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css?v=41">
+<link rel="stylesheet" href="../style.css?v=42">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -98,7 +98,7 @@
     <form class="book" id="book-form" action="mailto:layeruplabs@gmail.com" method="post" enctype="text/plain" data-mailto="layeruplabs@gmail.com">
       <label><span>Name</span><input type="text" name="name" autocomplete="name" required></label>
       <label><span>Email</span><input type="email" name="email" autocomplete="email" required></label>
-      <label class="book__full"><span>Type of shoot</span>
+      <label><span>Type of shoot</span>
         <select name="type" required>
           <option value="">Choose one</option>
           <option>Senior portraits</option>
@@ -108,15 +108,21 @@
           <option>Something else</option>
         </select>
       </label>
-      <fieldset class="date-pick book__full">
-        <legend>Preferred date</legend>
+      <div class="date-field">
+        <span class="date-field__label" id="date-label">Preferred date</span>
         <input type="hidden" name="date" id="book-date">
-        <div id="book-cal"></div>
-        <div class="cal__foot">
-          <p class="cal__picked" id="book-date-text" aria-live="polite">No date picked yet. That&rsquo;s fine if you&rsquo;re flexible.</p>
-          <p class="cal__legend"><span class="key key--open"></span>Open <span class="key key--busy"></span>Unavailable</p>
+        <button type="button" class="date-btn" id="date-btn" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="date-label date-btn-text">
+          <span id="date-btn-text" class="is-empty">Pick a date</span>
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="1.5" y="3" width="15" height="13.5" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M1.5 7.5h15M5.5 1v4M12.5 1v4" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        <div class="date-pop" id="date-pop" role="dialog" aria-label="Choose a date" hidden>
+          <div id="book-cal"></div>
+          <div class="cal__foot">
+            <p class="cal__legend"><span class="key key--open"></span>Open <span class="key key--busy"></span>Unavailable</p>
+            <button type="button" class="cal__clear" id="date-flex">I&rsquo;m flexible</button>
+          </div>
         </div>
-      </fieldset>
+      </div>
       <label class="book__full"><span>Message</span><textarea name="message" rows="4" placeholder="What's the shoot for?"></textarea></label>
       <div class="book__full"><button class="btn" type="submit">Send request</button></div>
     </form>
@@ -198,19 +204,32 @@
 </div></footer>
 <script src="calendar.js?v=1"></script>
 <script>
-  // Booking calendar. Busy days come from unavailable.json (edit them at /book/admin/).
+  // Booking calendar: a drop-down under the "Preferred date" field.
+  // Busy days come from unavailable.json (edit them at /book/admin/).
   const dateInput = document.getElementById('book-date');
-  const dateText = document.getElementById('book-date-text');
+  const dateBtn = document.getElementById('date-btn');
+  const dateBtnText = document.getElementById('date-btn-text');
+  const pop = document.getElementById('date-pop');
+  const openPop = (open) => {
+    pop.hidden = !open;
+    dateBtn.setAttribute('aria-expanded', open);
+    if (open) (pop.querySelector('.cal__day[tabindex="0"]') || pop.querySelector('.cal__nav')).focus();
+  };
   const cal = LULCalendar.Calendar(document.getElementById('book-cal'), {
     mode: 'pick',
     onChange: (d) => {
       dateInput.value = d || '';
-      dateText.innerHTML = d
-        ? `<b>${LULCalendar.long(d)}</b> <button type="button" class="cal__clear">Clear</button>`
-        : 'No date picked yet. That&rsquo;s fine if you&rsquo;re flexible.';
+      dateBtnText.textContent = d
+        ? new Date(`${d}T00:00`).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+        : 'Pick a date';
+      dateBtnText.classList.toggle('is-empty', !d);
+      if (d) { openPop(false); dateBtn.focus(); }
     },
   });
-  dateText.addEventListener('click', (e) => { if (e.target.closest('.cal__clear')) cal.clear(); });
+  dateBtn.addEventListener('click', () => openPop(pop.hidden));
+  document.getElementById('date-flex').addEventListener('click', () => { cal.clear(); dateBtnText.textContent = 'Flexible'; dateBtnText.classList.remove('is-empty'); openPop(false); dateBtn.focus(); });
+  document.addEventListener('click', (e) => { if (!pop.hidden && !e.target.closest('.date-field')) openPop(false); });
+  pop.addEventListener('keydown', (e) => { if (e.key === 'Escape') { openPop(false); dateBtn.focus(); } });
   LULCalendar.loadUnavailable('unavailable.json').then((u) => cal.setUnavailable(u));
 
   // Booking form: builds a tidy email from the fields.
