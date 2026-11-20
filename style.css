@@ -285,3 +285,20 @@ button.btn { cursor: pointer; }
 .ig-tile:hover { border-color: var(--accent); }
 .ig-tile h2 { margin-bottom: .8rem; }
 .tile-head p a { color: var(--accent); }
+.services .incl { font-size: .85rem; color: var(--ink); margin: .8rem 0 0; line-height: 1.45; }
+.faq { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+.faq details { border-top: 1px solid var(--line); padding: 14px 0; }
+.faq summary { font: 700 1.05rem/1.3 var(--display); letter-spacing: -.01em; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font: 400 1.3rem/1 var(--mono); color: var(--accent); }
+.faq details[open] summary::after { content: "\2013"; }
+.faq details p { color: var(--muted); font-size: .95rem; margin: .6rem 0 0; }
+@media (max-width: 880px) { .faq { grid-template-columns: 1fr; } }
+
+/* "Coming soon" slots stay hidden until a real photo replaces them.
+   Delete these two lines to show the empty slots again. */
+.thumb--empty { display: none; }
+.tile:has(.thumb--empty):not(:has(img, video)) { display: none; }
+@media (max-width: 880px) { .bento > .work { grid-column: span 4; } }
+@media (max-width: 520px) { .bento > .work { grid-column: span 6; } .bento > .work.work--wide-sm { grid-column: span 12; } }
+[hidden] { display: none !important; }

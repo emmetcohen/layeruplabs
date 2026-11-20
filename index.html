@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=38">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -80,11 +80,12 @@
       <img src="images/cars-2.jpg" alt="" loading="lazy">
     </div>
   </a>
-  <section class="tile head t4 work-head"><span class="label">Portfolio</span><h2><a href="work.html">Work</a></h2><p class="lede">Organized by how it was made.</p></section>
+  <section class="tile head t6 work-head"><span class="label">Portfolio</span><h2><a href="work.html">Work</a></h2><p class="lede">Organized by how it was made.</p></section>
   <a class="tile work" href="work.html#printing"><img src="images/lego-emmet-printing.jpg" alt="" loading="lazy"><span class="work-text"><b>3D Printing</b><span>4 projects</span></span></a>
-  <a class="tile work work--empty" href="work.html#modeling"><span class="work-note">Render coming soon</span><span class="work-text"><b>3D Modeling</b><span>1 project</span></span></a>
+  <!-- 3D Modeling is hidden until there is a render. To show it again, delete "hidden" below and change t6 back to t4 on the Work header tile. -->
+  <a class="tile work work--empty" href="work.html#modeling" hidden><span class="work-note">Render coming soon</span><span class="work-text"><b>3D Modeling</b><span>1 project</span></span></a>
   <a class="tile work" href="work.html#photography"><img src="images/places-5.jpg" alt="" loading="lazy"><span class="work-text"><b>Photography</b><span>5 sets</span></span></a>
-  <a class="tile work" href="work.html#illustration"><img src="images/frozen-peaks-art.jpg" alt="" loading="lazy" style="object-position:68% 50%"><span class="work-text"><b>Illustration</b><span>3 pieces</span></span></a>
+  <a class="tile work work--wide-sm" href="work.html#illustration"><img src="images/frozen-peaks-art.jpg" alt="" loading="lazy" style="object-position:68% 50%"><span class="work-text"><b>Illustration</b><span>3 pieces</span></span></a>
   <section class="tile about">
     <img src="images/emmet.jpeg" alt="Emmet smiling and giving two thumbs up beside his framed digital artwork at a gallery">
     <div><span class="label">About</span><h2>Hi, I&rsquo;m Emmet.</h2><p>I got my first 3D printer at twelve. Layer Up Labs is where I design in Blender and ZBrush, print on an FDM printer and finish by hand.</p><a class="more" href="about.html">More about me &rarr;</a></div>

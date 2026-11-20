@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=38">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -36,11 +36,12 @@
 </div></header>
 <main>
 <div class="wrap"><nav class="bento work-nav" aria-label="Work categories">
-  <section class="tile head t4 work-head"><span class="label">Portfolio</span><h1><a href="work.html">Work</a></h1><p class="lede">Organized by how it was made.</p></section>
+  <section class="tile head t6 work-head"><span class="label">Portfolio</span><h1><a href="work.html">Work</a></h1><p class="lede">Organized by how it was made.</p></section>
   <a class="tile work" href="#printing"><img src="images/lego-emmet-printing.jpg" alt=""><span class="work-text"><b>3D Printing</b><span>4 projects</span></span></a>
-  <a class="tile work work--empty" href="#modeling"><span class="work-note">Render coming soon</span><span class="work-text"><b>3D Modeling</b><span>1 project</span></span></a>
+  <!-- 3D Modeling is hidden until there is a render. To show it again, delete "hidden" below and change t6 back to t4 on the Work header tile. -->
+  <a class="tile work work--empty" href="#modeling" hidden><span class="work-note">Render coming soon</span><span class="work-text"><b>3D Modeling</b><span>1 project</span></span></a>
   <a class="tile work" href="#photography"><img src="images/places-5.jpg" alt=""><span class="work-text"><b>Photography</b><span>5 sets</span></span></a>
-  <a class="tile work" href="#illustration"><img src="images/frozen-peaks-art.jpg" alt="" style="object-position:68% 50%"><span class="work-text"><b>Illustration</b><span>3 pieces</span></span></a>
+  <a class="tile work work--wide-sm" href="#illustration"><img src="images/frozen-peaks-art.jpg" alt="" style="object-position:68% 50%"><span class="work-text"><b>Illustration</b><span>3 pieces</span></span></a>
 </nav>
 <div class="bento" id="project" tabindex="-1"></div></div>
 <template data-project="#printing/lego-emmet-costume" data-title="LEGO Emmet Costume — Layer Up Labs"><section class="tile head t12 project-intro"><div><h2>LEGO Emmet Costume</h2><p class="lede">A wearable LEGO minifigure with 3D-printed hands.</p></div><div><span class="label">Details</span><ul class="facts" style="margin-bottom:0"><li><span>Height</span><span>7 ft tall</span></li><li><span>Hands</span><span>3D printed, FDM</span></li><li><span>Arms</span><span>Papier-m&acirc;ch&eacute;</span></li><li><span>Body and legs</span><span>Painted cardboard</span></li></ul></div></section><section class="tile t6 photo"><img src="images/lego-emmet-costume.jpg" alt="The finished costume indoors: a yellow LEGO head with a startled face, red torso and arms, blue legs and yellow claw hands" style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px"></section><section class="tile t6 photo"><img src="images/lego-emmet-hand.jpg" alt="A yellow 3D-printed LEGO claw hand on a desk, still standing on its branching tree supports" style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 60%;border-radius:14px"></section><section class="tile t12"><div class="tile-head"><h2>In action</h2></div><video src="images/lego-emmet-in-action.mp4" poster="images/lego-emmet-in-action.jpg" controls playsinline preload="metadata" aria-label="The costume being worn outdoors on a driveway, greeting young trick-or-treaters and their families" style="display:block;width:auto;max-width:100%;max-height:85vh;margin:0 auto;border-radius:14px"></video></section><section class="tile t12"><div class="tile-head"><h2>Process</h2></div><div class="grid"><div class="thumb"><img src="images/lego-emmet-printing.jpg" alt="A yellow LEGO hand printing on a Bambu Lab 3D printer, held up by branching tree supports" loading="lazy"></div><div class="thumb"><img src="images/lego-emmet-arm.jpg" alt="An unpainted papier-m&acirc;ch&eacute; arm made from textbook pages, fitted with a yellow printed hand and resting on a chair" loading="lazy" style="object-position:50% 47%"></div><div class="thumb"><img src="images/lego-emmet-painting.jpg" alt="Emmet kneeling on a lawn, spray painting the costume's legs blue" loading="lazy"></div></div></section></template>
