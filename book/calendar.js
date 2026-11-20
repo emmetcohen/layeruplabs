@@ -7,7 +7,7 @@
    weekdays: 0 = Sunday ... 6 = Saturday, blocked every week.
    dates:    single days, written YYYY-MM-DD. */
 
-const AVAILABILITY_URL = '';
+const AVAILABILITY_URL = 'https://script.google.com/macros/s/AKfycbxPeP1OaIoo_o6tWRBpneW9oI0bp9Ahcon4NkP4XC7WApB8wGSohv3C4tNDE5pg4dFs9A/exec';
 
 (function () {
   const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
