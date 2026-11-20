@@ -130,14 +130,33 @@
   let current = saved;
 
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-  const refresh = () => {
+  const connected = () => Boolean(token && sha);
+  let connectError = '';
+  const refresh = (keepStatus = false) => {
     const dirty = !same(current, saved);
-    $('save').disabled = !dirty || !token;
+    $('save').disabled = !dirty || !connected();
     $('revert').disabled = !dirty;
     const n = current.dates.length;
     $('count').textContent = `${n} day${n === 1 ? '' : 's'} blocked` + (current.weekdays.length ? ' + weekly days' : '');
-    if (dirty) status(token ? 'Unsaved changes.' : 'Unsaved changes. Connect to GitHub below to save.');
+    if (dirty && !keepStatus) {
+      status(connected() ? 'Unsaved changes. Press Save.' : (connectError || 'Unsaved changes. Connect to GitHub below before you can save.'), connected() ? '' : 'err');
+    }
   };
+
+  // Turns a failed GitHub reply into a plain-English message.
+  async function explain(res) {
+    let said = '';
+    try { said = (await res.json()).message || ''; } catch (e) {}
+    const tip = {
+      401: 'GitHub didn’t accept this key. It may be mistyped or expired. Press “Disconnect this device”, make a new key and connect again.',
+      403: 'This key isn’t allowed to change files. Make a new key with layeruplabs selected and Contents set to “Read and write”.',
+      404: 'This key can’t see the layeruplabs repo. Make a new key and choose layeruplabs under “Repository access”.',
+      409: 'The calendar was changed somewhere else. Reload this page and try again.',
+      422: 'The calendar was changed somewhere else. Reload this page and try again.',
+    }[res.status] || `GitHub error ${res.status}.`;
+    return `${tip}${said ? ` (GitHub says: “${said}”)` : ''}`;
+  }
+  const offline = 'Couldn’t reach GitHub. Check your internet connection and try again.';
 
   const cal = LULCalendar.Calendar($('admin-cal'), {
     mode: 'admin',
@@ -172,26 +191,29 @@
   const encode = (text) => btoa(String.fromCharCode(...new TextEncoder().encode(text)));
 
   async function load() {
+    sha = null;
+    connectError = '';
     $('forget').hidden = !token;
-    $('connect').querySelector('h2').textContent = token ? 'Connected to GitHub' : 'Connect to GitHub';
+    $('connect').querySelector('h2').textContent = 'Connect to GitHub';
     if (!token) {
       apply(await LULCalendar.loadUnavailable('../unavailable.json'));
       status('Showing the live calendar. Connect to GitHub below to make changes.');
       return;
     }
     status('Loading from GitHub…');
-    try {
-      const res = await gh('GET');
-      if (res.status === 401) throw new Error('GitHub didn’t accept that key. Check it or make a new one.');
-      if (res.status === 404) throw new Error('Couldn’t find the file. Make sure the key has access to the layeruplabs repo.');
-      if (!res.ok) throw new Error(`GitHub error ${res.status}.`);
+    let res;
+    try { res = await gh('GET'); } catch (e) { res = null; }
+    if (res && res.ok) {
       const file = await res.json();
-      sha = file.sha;
       apply(JSON.parse(decode(file.content)));
+      sha = file.sha;
+      refresh(true);
+      $('connect').querySelector('h2').textContent = 'Connected to GitHub';
       status('Connected. Tap days to block them, then Save.', 'ok');
-    } catch (e) {
+    } else {
       apply(await LULCalendar.loadUnavailable('../unavailable.json'));
-      status(e.message, 'err');
+      connectError = `Not connected. ${res ? await explain(res) : offline}`;
+      status(connectError, 'err');
     }
   }
 
@@ -200,19 +222,17 @@
     status('Saving…');
     const data = cal.value();
     const text = JSON.stringify(data, null, 2) + '\n';
-    try {
-      const res = await gh('PUT', { message: 'Update photo availability', content: encode(text), sha, branch: BRANCH });
-      if (res.status === 409 || res.status === 422) throw new Error('The calendar changed somewhere else. Reload this page and try again.');
-      if (res.status === 401 || res.status === 403) throw new Error('GitHub didn’t accept the key. It may have expired.');
-      if (!res.ok) throw new Error(`GitHub error ${res.status}.`);
+    let res;
+    try { res = await gh('PUT', { message: 'Update photo availability', content: encode(text), sha, branch: BRANCH }); } catch (e) { res = null; }
+    if (res && res.ok) {
       sha = (await res.json()).content.sha;
       saved = data;
       current = data;
-      refresh();
+      refresh(true);
       status('Saved. The booking calendar updates in about a minute.', 'ok');
-    } catch (e) {
-      status(e.message, 'err');
-      refresh();
+    } else {
+      status(`Not saved. ${res ? await explain(res) : offline}`, 'err');
+      refresh(true);
     }
   });
 
