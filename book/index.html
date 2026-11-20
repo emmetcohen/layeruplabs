@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a Session — Layer Up Labs</title>
+<meta name="description" content="Book a photo session with Emmet: senior portraits, headshots, events and product photos in the Tampa Bay area.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Layer Up Labs">
+<meta property="og:title" content="Book a Session — Layer Up Labs">
+<meta property="og:description" content="Senior portraits, headshots, events and product photos in the Tampa Bay area.">
+<meta property="og:url" content="https://layeruplabs.com/book/">
+<meta property="og:image" content="https://layeruplabs.com/images/music-1.jpg">
+<meta property="og:image:alt" content="A guitarist in a blue shirt plays a blue Ibanez guitar, lit by a single shaft of light against a black background">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e9ecf1">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css?v=36">
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="../index.html">layer up<b>.</b>labs</a>
+  <nav class="nav" aria-label="Main">
+    <a href="../index.html">Home</a>
+    <a href="../work.html">Work</a>
+    <a href="./" aria-current="page">Book</a>
+    <a href="../about.html">About</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</div></header>
+<main>
+<div class="wrap"><div class="bento">
+
+  <!-- ============ INTRO ============ -->
+  <section class="tile head t8 photo-intro">
+    <span class="label">Photography &middot; Tampa Bay area</span>
+    <div>
+      <h1>Book a photo <span>session.</span></h1>
+      <!-- EDIT: one or two sentences, in your own words. -->
+      <p class="lede">Senior portraits, headshots, events and product photos for small businesses.</p>
+      <div class="btns">
+        <a class="btn" href="#book">Request a date</a>
+        <a class="btn btn--ghost" href="../work.html#photography">See my photography</a>
+      </div>
+    </div>
+  </section>
+  <section class="tile t4 cover" aria-hidden="true">
+    <img src="../images/music-1.jpg" alt="">
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="tile t12" id="services">
+    <div class="tile-head">
+      <span class="label">Services</span>
+      <h2>What I shoot</h2>
+      <p>Every session is quoted after you reach out. Full pricing guide sent on request.</p>
+    </div>
+    <!-- EDIT: replace each $___ with your real starting price. -->
+    <div class="grid services">
+      <div class="step"><h3>Senior portraits</h3><p>Graduation photos at locations picked for you.</p><p class="price">Starting at <b>$___</b></p></div>
+      <div class="step"><h3>Headshots</h3><p>Clean, professional headshots for work, school or LinkedIn.</p><p class="price">Starting at <b>$___</b></p></div>
+      <div class="step"><h3>Events</h3><p>Parties, games, performances and club events.</p><p class="price">Starting at <b>$___</b></p></div>
+      <div class="step"><h3>Product photos</h3><p>Photos for small businesses, Etsy shops and online listings.</p><p class="price">Starting at <b>$___</b></p></div>
+    </div>
+    <p class="note">Serving the Tampa Bay area.</p>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="tile about t5">
+    <img src="../images/emmet.jpeg" alt="Emmet smiling and giving two thumbs up beside his framed digital artwork at a gallery">
+    <div>
+      <span class="label">Your photographer</span>
+      <h2>Hi, I&rsquo;m Emmet.</h2>
+      <!-- EDIT: 2–3 sentences in your own words. -->
+      <p>I co-founded and run a photography club with 70+ members. I like making people feel relaxed in front of the camera and finding the light that makes a photo.</p>
+      <a class="more" href="../work.html#photography">See my photography &rarr;</a>
+    </div>
+  </section>
+
+  <!-- ============ BOOKING FORM ============
+       This form opens the visitor's email app with everything filled in.
+       To get submissions straight to your inbox instead: sign up at
+       formspree.io, set action="https://formspree.io/f/YOUR_ID" and
+       method="POST", and delete the data-mailto attribute.
+       ====================================== -->
+  <section class="tile t7" id="book">
+    <div class="tile-head">
+      <span class="label">Book</span>
+      <h2>Request a session</h2>
+      <p>Tell me what you have in mind and I&rsquo;ll reply with availability and pricing.</p>
+    </div>
+    <form class="book" id="book-form" action="mailto:layeruplabs@gmail.com" method="post" enctype="text/plain" data-mailto="layeruplabs@gmail.com">
+      <label><span>Name</span><input type="text" name="name" autocomplete="name" required></label>
+      <label><span>Email</span><input type="email" name="email" autocomplete="email" required></label>
+      <label><span>Type of shoot</span>
+        <select name="type" required>
+          <option value="">Choose one</option>
+          <option>Senior portraits</option>
+          <option>Headshots</option>
+          <option>Event</option>
+          <option>Product photos</option>
+          <option>Something else</option>
+        </select>
+      </label>
+      <label><span>Preferred date</span><input type="date" name="date"></label>
+      <label class="book__full"><span>Message</span><textarea name="message" rows="4" placeholder="What's the shoot for?"></textarea></label>
+      <div class="book__full"><button class="btn" type="submit">Send request</button></div>
+    </form>
+  </section>
+
+</div></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+  <span>&copy; 2026 Layer Up Labs &middot; Tampa Bay area</span>
+  <span><a href="mailto:layeruplabs@gmail.com">layeruplabs@gmail.com</a></span>
+</div></footer>
+<script>
+  // Booking form: builds a tidy email from the fields.
+  const form = document.getElementById('book-form');
+  if (form.dataset.mailto) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = (n) => form.elements[n].value.trim();
+      const body = `Name: ${v('name')}\nEmail: ${v('email')}\nType of shoot: ${v('type')}\nPreferred date: ${v('date') || 'Flexible'}\n\n${v('message')}`;
+      location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent('Photo session: ' + v('type'))}&body=${encodeURIComponent(body)}`;
+    });
+  }
+</script>
+</body>
+</html>

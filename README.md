@@ -3,12 +3,15 @@
 Plain HTML + one stylesheet (`style.css`). No build step.
 
 - Pages: `index.html`, `work.html`, `shop.html`, `about.html`, `contact.html`
-- Photography business: `photography/index.html`, live at layeruplabs.com/photography.
-  It's linked in every page's menu and from the blue banner on the home page.
-  - Prices: replace each `$___` in the Services section.
-  - Photos: the comment above the Portfolio section shows how to fill a
-    "Photo coming soon" slot. Paths on that page start with `../` (e.g. `../images/senior-1.jpg`).
+- Booking photo sessions: `book/index.html`, live at layeruplabs.com/book.
+  Photos themselves live in Work > Photography; the Book page only has services,
+  prices, a short about and the booking form.
+  - Linked from every page's menu ("Book"), the blue banner on the home page, and a
+    "Book a session" box under every Photography set on the Work page
+    (wording is in the `book-cta` template in `work.html`).
+  - Prices: replace each `$___` in the Services section of `book/index.html`.
   - Booking form: opens the visitor's email app; see the comment above it to switch to Formspree.
+  - `photography/` just forwards old links to Work > Photography.
 - Colors and fonts: variables at the top of `style.css`
 - Photos: put files in `images/`. For a card that says "Photo coming soon", replace
   `<div class="thumb thumb--empty">Photo coming soon</div>` with
