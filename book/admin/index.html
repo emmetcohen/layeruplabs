@@ -27,6 +27,63 @@
   .weekly label:has(input:checked) { background: #ffe3e3; border-color: #f2a6a6; color: #b42318; }
   .save-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
   .btn:disabled { opacity: .4; cursor: default; transform: none; }
+  .panel { display: contents; }
+  .panel > .t12, .stats-body > .t12 { grid-column: span 12; }
+  .panel > .t8 { grid-column: span 8; }
+  .panel > .t6, .stats-body > .t6 { grid-column: span 6; }
+  .panel > .t4 { grid-column: span 4; }
+  @media (max-width: 880px) { .panel > .t8, .panel > .t6, .panel > .t4, .stats-body > .t6 { grid-column: span 12; } }
+  .admin-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+  .admin-head .label { margin: 0; }
+  .tabs, .range { display: inline-flex; gap: 4px; padding: 4px; background: var(--bg); border-radius: 12px; }
+  .tabs button, .range button { font: 500 .8rem/1 var(--mono); padding: 10px 16px; border: 0; border-radius: 9px; background: none; color: var(--muted); cursor: pointer; }
+  .tabs button[aria-selected="true"], .range button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(15,23,32,.12); }
+  .tabs button:hover, .range button:hover { color: var(--ink); }
+  .intro h2 { margin-bottom: .6rem; }
+  .intro .lede { margin: 0; }
+  .stats-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; }
+  .stats-bar h2 { margin-bottom: .4rem; }
+  .stats-body { display: contents; transition: opacity .2s; }
+  .stats-body.is-loading > * { opacity: .45; }
+  .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+  .kpi { background: var(--bg); border-radius: 14px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+  .kpi__label { font-size: .85rem; color: var(--muted); }
+  .kpi__value { font: 700 clamp(1.8rem, 4vw, 2.4rem)/1 var(--display); letter-spacing: -.03em; }
+  .kpi__delta { font: 500 .72rem/1.3 var(--mono); color: var(--muted); }
+  .kpi__delta.up { color: #1a7f37; }
+  .kpi__delta.down { color: #b42318; }
+  .chart-tile h3 { margin-bottom: .3rem; }
+  .chart-tile .sub { color: var(--muted); font-size: .85rem; margin: 0 0 .4rem; }
+  .chart { position: relative; margin-top: .8rem; }
+  .chart svg { display: block; width: 100%; overflow: visible; }
+  .chart .bar { fill: var(--accent); transition: opacity .12s; }
+  .chart .hit { fill: transparent; cursor: default; }
+  .chart .hit:hover + .bar, .chart g.on .bar { opacity: .7; }
+  .chart .grid { stroke: #e3e7ee; stroke-width: 1; shape-rendering: crispEdges; }
+  .chart .axis-text { font: 400 10px var(--mono); fill: var(--muted); font-variant-numeric: tabular-nums; }
+  .chart .empty-note { font: 400 .85rem var(--body); fill: var(--muted); }
+  .tip { position: fixed; z-index: 30; pointer-events: none; background: var(--ink); color: #fff; border-radius: 8px; padding: 8px 10px; font-size: .8rem; line-height: 1.35; box-shadow: 0 6px 18px rgba(15,23,32,.2); transform: translate(-50%, calc(-100% - 10px)); white-space: nowrap; }
+  .tip b { display: block; font: 700 1rem/1.2 var(--display); }
+  .tip span { opacity: .75; }
+  .nums { margin-top: .8rem; }
+  .nums summary { cursor: pointer; font: 500 .75rem/1.4 var(--mono); color: var(--accent); }
+  .nums table { width: 100%; border-collapse: collapse; margin-top: .6rem; font-size: .85rem; font-variant-numeric: tabular-nums; }
+  .nums th, .nums td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+  .nums td:last-child, .nums th:last-child { text-align: right; }
+  .nums .scroll { max-height: 260px; overflow: auto; }
+  .meters { display: grid; gap: 10px; margin-top: .9rem; }
+  .meter { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto; align-items: center; gap: 12px; font-size: .9rem; }
+  .meter__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .meter__track, .meter__fill { display: block; }
+  .meter__track { height: 8px; border-radius: 999px; background: #e7ebff; overflow: hidden; }
+  .meter__fill { height: 100%; border-radius: 999px; background: var(--accent); min-width: 2px; }
+  .meter__val { font: 500 .8rem/1 var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; min-width: 4.5ch; text-align: right; }
+  .meter__val span { color: var(--muted); }
+  .meters .none { color: var(--muted); font-size: .9rem; margin: 0; }
+  .range button { white-space: nowrap; }
+  @media (max-width: 520px) { .range button { padding: 10px 11px; } .tabs button { padding: 10px 14px; } }
+  @media (max-width: 880px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 520px) { .meter { grid-template-columns: minmax(0, 1fr) auto; } .meter__track { grid-column: 1 / -1; grid-row: 2; } }
 </style>
 </head>
 <body>
@@ -50,9 +107,17 @@
 <main id="admin-main" hidden>
 <div class="wrap"><div class="bento">
 
-  <section class="tile head t12">
+  <section class="tile head t12 admin-head">
     <span class="label">Admin &middot; only for Emmet</span>
-    <h1>Availability</h1>
+    <div class="tabs" role="tablist" aria-label="Admin sections">
+      <button type="button" role="tab" id="tab-a" aria-controls="panel-a" aria-selected="true">Availability</button>
+      <button type="button" role="tab" id="tab-s" aria-controls="panel-s" aria-selected="false" tabindex="-1">Stats</button>
+    </div>
+  </section>
+
+  <div class="panel" id="panel-a" role="tabpanel" aria-labelledby="tab-a">
+  <section class="tile t12 intro">
+    <h2>Availability</h2>
     <p class="lede">Tap the days you can&rsquo;t shoot, then press Save. They show as unavailable on the booking calendar right away.</p>
   </section>
 
@@ -82,7 +147,50 @@
     </div>
   </section>
 
+  </div>
+
+  <div class="panel" id="panel-s" role="tabpanel" aria-labelledby="tab-s" hidden>
+    <section class="tile t12 stats-bar">
+      <div>
+        <h2>Visitors</h2>
+        <p class="admin-status" id="stats-note"></p>
+      </div>
+      <div class="range" role="group" aria-label="Date range">
+        <button type="button" data-days="7">7 days</button>
+        <button type="button" data-days="30" aria-pressed="true">30 days</button>
+        <button type="button" data-days="90">90 days</button>
+        <button type="button" data-days="365">12 months</button>
+      </div>
+    </section>
+    <div class="stats-body" id="stats-body">
+      <section class="tile t12"><div class="kpis" id="kpis"></div></section>
+      <section class="tile t12 chart-tile">
+        <h3>Page views per day</h3>
+        <div class="chart" id="ch-daily"></div>
+        <details class="nums"><summary>See the numbers</summary><div id="tb-daily"></div></details>
+      </section>
+      <section class="tile t6 chart-tile">
+        <h3>Time of day</h3>
+        <p class="sub">Page views by hour, Tampa time</p>
+        <div class="chart" id="ch-hours"></div>
+        <details class="nums"><summary>See the numbers</summary><div id="tb-hours"></div></details>
+      </section>
+      <section class="tile t6 chart-tile">
+        <h3>Day of the week</h3>
+        <p class="sub">Page views by weekday</p>
+        <div class="chart" id="ch-week"></div>
+        <details class="nums"><summary>See the numbers</summary><div id="tb-week"></div></details>
+      </section>
+      <section class="tile t6 chart-tile"><h3>Most visited pages</h3><div class="meters" id="ls-pages"></div></section>
+      <section class="tile t6 chart-tile"><h3>Where visitors come from</h3><p class="sub">The site they clicked from</p><div class="meters" id="ls-sources"></div></section>
+      <section class="tile t6 chart-tile"><h3>Photo sets &amp; projects</h3><p class="sub">Most opened on the Work page</p><div class="meters" id="ls-projects"></div></section>
+      <section class="tile t6 chart-tile"><h3>Phone or computer</h3><div class="meters" id="ls-devices"></div>
+        <h3 style="margin-top:1.6rem">Booking forms by type</h3><div class="meters" id="ls-book"></div></section>
+    </div>
+  </div>
+
 </div></div>
+<div class="tip" id="tip" role="presentation" hidden></div>
 </main>
 <script src="../calendar.js?v=3"></script>
 <script>
@@ -155,6 +263,7 @@
     }
     password = pass;
     session.set(pass);
+    try { localStorage.setItem('lul-no-track', '1'); } catch (e) {} // don't count Emmet's own visits
     $('gate').hidden = true;
     $('admin-main').hidden = false;
     apply(r.data);
@@ -193,6 +302,212 @@
   });
 
   addEventListener('beforeunload', (e) => { if (!same(current, saved)) e.preventDefault(); });
+
+  /* ---------------- Tabs ---------------- */
+  const tabs = [$('tab-a'), $('tab-s')];
+  const panels = [$('panel-a'), $('panel-s')];
+  const showTab = (i) => {
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', i === j); t.tabIndex = i === j ? 0 : -1; panels[j].hidden = i !== j; });
+    if (i === 1 && !statsLoaded) loadStats();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => showTab(i));
+    t.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { const j = 1 - i; showTab(j); tabs[j].focus(); }
+    });
+  });
+
+  /* ---------------- Stats ---------------- */
+  let statsLoaded = false;
+  let statsDays = 30;
+  let lastStats = null;
+  const num = (n) => Number(n || 0).toLocaleString('en-US');
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const svgEl = (tag, attrs) => { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const WEEK_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const shortDate = (d) => { const [y, m, day] = d.split('-').map(Number); return `${MONTHS[m - 1]} ${day}`; };
+  const longDate = (d) => { const [y, m, day] = d.split('-').map(Number); const w = new Date(y, m - 1, day).getDay(); return `${WEEK_LONG[w]}, ${MONTHS[m - 1]} ${day}`; };
+  const hourName = (h) => (h % 12 || 12) + (h < 12 ? ' am' : ' pm');
+
+  const PAGE_NAMES = { '/': 'Home', '/index.html': 'Home', '/work.html': 'Work', '/book/': 'Book', '/book/index.html': 'Book', '/about.html': 'About', '/contact.html': 'Contact', '/404.html': 'Page not found' };
+  const PROJECT_NAMES = {
+    'printing/lego-emmet-costume': 'LEGO Emmet Costume', 'printing/rc-car': 'RC Car', 'printing/rc-battleship': 'RC Battleship',
+    'printing/halloween-earrings': 'Halloween Earrings', 'modeling/sd40-2-locomotive': 'SD40-2 Locomotive',
+    'photography/photography-senior-sunrise': 'Senior Sunrise', 'photography/photography-nature': 'Nature',
+    'photography/photography-music': 'Music', 'photography/photography-marching-band': 'Marching Band',
+    'photography/photography-cars': 'Cars', 'photography/photography-places': 'Places',
+    'illustration/frozen-peaks': 'Frozen Peaks', 'illustration/st-josephs-north': 'St. Joseph’s Hospital North', 'illustration/ap-2d-art': 'AP 2-D Art',
+  };
+  const pretty = (slug) => slug.split('/').pop().replace(/^photography-/, '').replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const DEVICE_NAMES = { phone: 'Phone', tablet: 'Tablet', computer: 'Computer' };
+
+  // Tooltip (shared)
+  const tip = $('tip');
+  const showTip = (x, y, value, label) => {
+    tip.replaceChildren(el('b', '', value), el('span', '', label));
+    tip.style.left = `${x}px`; tip.style.top = `${y}px`; tip.hidden = false;
+  };
+  const hideTip = () => { tip.hidden = true; };
+
+  // Top of the y-axis: 4 even steps of a round number (0, 30, 60, 90, 120).
+  const niceMax = (v) => {
+    if (v <= 4) return 4;
+    const raw = v / 4, p = 10 ** Math.floor(Math.log10(raw));
+    for (const m of [1, 2, 2.5, 3, 4, 5, 10]) if (m * p >= raw) return m * p * 4;
+    return 40 * p;
+  };
+
+  // Column chart: one series, sequential blue, 4px rounded tops, hover readout.
+  function columns(box, items, labelEvery, height = 170) {
+    box.replaceChildren();
+    const W = Math.max(box.clientWidth, 240), H = height, L = 34, B = 22, T = 6;
+    const pw = W - L, ph = H - B - T;
+    const max = niceMax(Math.max(...items.map((d) => d.value), 0));
+    const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img' });
+    const total = items.reduce((a, d) => a + d.value, 0);
+    svg.setAttribute('aria-label', `${num(total)} page views. Numbers are in the table below.`);
+    for (let i = 0; i <= 4; i++) {
+      const v = (max / 4) * i, y = T + ph - (v / max) * ph;
+      svg.append(svgEl('line', { class: 'grid', x1: L, x2: W, y1: y, y2: y }));
+      const t = svgEl('text', { class: 'axis-text', x: L - 8, y: y + 3, 'text-anchor': 'end' });
+      t.textContent = Number.isInteger(v) ? num(v) : v.toFixed(1);
+      svg.append(t);
+    }
+    const band = pw / items.length;
+    const bw = Math.max(2, Math.min(24, band - 2));
+    items.forEach((d, i) => {
+      const cx = L + band * i + band / 2;
+      const g = svgEl('g', {});
+      const hit = svgEl('rect', { class: 'hit', x: L + band * i, y: T, width: band, height: ph });
+      g.append(hit);
+      if (d.value > 0) {
+        const h = Math.max(2, (d.value / max) * ph), x = cx - bw / 2, y = T + ph - h, r = Math.min(4, bw / 2, h);
+        g.append(svgEl('path', { class: 'bar', d: `M${x},${T + ph}V${y + r}Q${x},${y} ${x + r},${y}H${x + bw - r}Q${x + bw},${y} ${x + bw},${y + r}V${T + ph}Z` }));
+      }
+      g.addEventListener('pointermove', (e) => { g.classList.add('on'); showTip(e.clientX, e.clientY, d.tipValue, d.tipLabel); });
+      g.addEventListener('pointerleave', () => { g.classList.remove('on'); hideTip(); });
+      svg.append(g);
+      if (i % labelEvery === 0) {
+        const t = svgEl('text', { class: 'axis-text', x: cx, y: H - 6, 'text-anchor': 'middle' });
+        t.textContent = d.label;
+        svg.append(t);
+      }
+    });
+    box.append(svg);
+  }
+
+  function table(box, head, rows, scroll) {
+    const t = el('table');
+    const tr = el('tr'); head.forEach((h) => tr.append(el('th', '', h))); t.append(el('thead')); t.tHead.append(tr);
+    const tb = el('tbody');
+    rows.forEach((r) => { const row = el('tr'); r.forEach((c) => row.append(el('td', '', c))); tb.append(row); });
+    t.append(tb);
+    const wrap = el('div', scroll ? 'scroll' : '');
+    wrap.append(t);
+    box.replaceChildren(wrap);
+  }
+
+  // Ranked bar list: name, bar, count (share).
+  function meters(box, rows, nameFor, emptyText) {
+    box.replaceChildren();
+    if (!rows.length) { box.append(el('p', 'none', emptyText || 'Nothing yet.')); return; }
+    const total = rows.reduce((a, r) => a + r[1], 0);
+    const max = rows[0][1];
+    rows.forEach(([key, n]) => {
+      const row = el('div', 'meter');
+      const name = el('span', 'meter__name', nameFor(key));
+      name.title = nameFor(key);
+      const track = el('span', 'meter__track');
+      const fill = el('span', 'meter__fill');
+      fill.style.width = `${(n / max) * 100}%`;
+      track.append(fill);
+      const val = el('span', 'meter__val', num(n));
+      val.append(el('span', '', ` · ${Math.round((n / total) * 100)}%`));
+      row.append(name, track, val);
+      box.append(row);
+    });
+  }
+
+  function kpis(st) {
+    const items = [
+      ['Page views', 'views'], ['Visitors', 'visitors'], ['Booking forms sent', 'book'],
+      ['Reviews sent', 'review'], ['Instagram clicks', 'instagram'],
+    ];
+    const box = $('kpis');
+    box.replaceChildren();
+    items.forEach(([label, k]) => {
+      const now = st.totals[k], before = st.prev[k];
+      const card = el('div', 'kpi');
+      card.append(el('span', 'kpi__label', label), el('span', 'kpi__value', num(now)));
+      let delta = '', cls = '';
+      if (before === 0 && now === 0) delta = 'No change';
+      else if (before === 0) { delta = `New this period`; cls = 'up'; }
+      else {
+        const pct = Math.round(((now - before) / before) * 100);
+        delta = pct === 0 ? 'Same as before' : `${pct > 0 ? '▲ +' : '▼ '}${pct}% vs previous ${st.days} days`;
+        cls = pct > 0 ? 'up' : pct < 0 ? 'down' : '';
+      }
+      card.append(el('span', `kpi__delta ${cls}`, delta));
+      box.append(card);
+    });
+  }
+
+  function drawStats(st) {
+    lastStats = st;
+    $('stats-note').textContent = st.since
+      ? `Counting since ${longDate(st.since)}. Your own visits aren’t counted.`
+      : 'No visits counted yet. They start showing up as soon as people visit the site.';
+    kpis(st);
+    const dailyEvery = st.daily.length <= 7 ? 1 : st.daily.length <= 31 ? 5 : st.daily.length <= 92 ? 14 : 60;
+    columns($('ch-daily'), st.daily.map((d) => ({
+      label: shortDate(d.d), value: d.views,
+      tipValue: `${num(d.views)} page view${d.views === 1 ? '' : 's'}`,
+      tipLabel: `${longDate(d.d)} · ${num(d.visitors)} visitor${d.visitors === 1 ? '' : 's'}`,
+    })), dailyEvery, 190);
+    table($('tb-daily'), ['Day', 'Visitors', 'Page views'], st.daily.slice().reverse().map((d) => [longDate(d.d), num(d.visitors), num(d.views)]), true);
+    columns($('ch-hours'), st.hours.map((v, h) => ({
+      label: h % 6 === 0 ? hourName(h) : '', value: v,
+      tipValue: `${num(v)} page view${v === 1 ? '' : 's'}`, tipLabel: `${hourName(h)}–${hourName((h + 1) % 24)}`,
+    })), 1);
+    table($('tb-hours'), ['Hour', 'Page views'], st.hours.map((v, h) => [`${hourName(h)}–${hourName((h + 1) % 24)}`, num(v)]), true);
+    columns($('ch-week'), st.weekdays.map((v, w) => ({
+      label: WEEK[w], value: v, tipValue: `${num(v)} page view${v === 1 ? '' : 's'}`, tipLabel: WEEK_LONG[w],
+    })), 1);
+    table($('tb-week'), ['Day', 'Page views'], st.weekdays.map((v, w) => [WEEK_LONG[w], num(v)]));
+    meters($('ls-pages'), st.pages, (p) => PAGE_NAMES[p] || p, 'No page views yet.');
+    meters($('ls-sources'), st.sources, (s) => s, 'No visitors yet.');
+    meters($('ls-projects'), st.projects, (p) => PROJECT_NAMES[p] || pretty(p), 'No projects opened yet.');
+    meters($('ls-devices'), st.devices, (d) => DEVICE_NAMES[d] || d, 'No visitors yet.');
+    meters($('ls-book'), st.bookTypes, (b) => b, 'No booking forms sent yet.');
+  }
+
+  async function loadStats() {
+    statsLoaded = true;
+    $('stats-body').classList.add('is-loading');
+    $('stats-note').textContent = lastStats ? $('stats-note').textContent : 'Loading…';
+    const r = await LULCalendar.adminCall({ action: 'stats', password, days: statsDays });
+    $('stats-body').classList.remove('is-loading');
+    if (r.ok && r.stats) drawStats(r.stats);
+    else {
+      statsLoaded = false;
+      $('stats-note').className = 'admin-status err';
+      $('stats-note').textContent = r.error === 'bad-request'
+        ? 'The Google helper needs updating before stats work. Paste in the new helper code and deploy a new version.'
+        : explain(r);
+      return;
+    }
+    $('stats-note').className = 'admin-status';
+  }
+
+  document.querySelectorAll('.range button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.range button').forEach((x) => x.setAttribute('aria-pressed', x === b));
+    statsDays = Number(b.dataset.days);
+    loadStats();
+  }));
+  let resizeTimer;
+  addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (lastStats && !$('panel-s').hidden) drawStats(lastStats); }, 150); });
 
   if (!LULCalendar.ready()) $('gate-msg').textContent = problems['not-set-up'];
   const remembered = session.get();

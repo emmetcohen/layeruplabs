@@ -18,6 +18,12 @@ Plain HTML + one stylesheet (`style.css`). No build step.
   - Marking busy days: open **layeruplabs.com/book/admin/** (not linked anywhere, hidden
     from Google), enter the password, tap days or tick "Always busy on", then Save.
     Changes show on the booking calendar right away.
+  - Stats: the admin page's **Stats** tab shows page views, visitors, booking forms,
+    reviews, Instagram clicks, busiest days and hours, top pages, where visitors came
+    from, and phone vs computer. `assets/track.js` (on every main page) sends one
+    anonymous note per page view to the same helper, which saves it in a Google Sheet
+    called "Layer Up Labs visits". No names, IPs or cookies; Emmet's own devices stop
+    counting once they've unlocked the admin page.
   - The helper's code is `availability-helper.gs` in this folder. It holds the password,
     so it's in `.gitignore` and never published. To change the password, edit it there,
     paste it into the Apps Script project, and deploy a new version.

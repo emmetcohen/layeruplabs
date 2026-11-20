@@ -240,6 +240,7 @@
       const v = (n) => form.elements[n].value.trim();
       const date = v('date') ? LULCalendar.long(v('date')) : 'Flexible';
       const body = `Name: ${v('name')}\nEmail: ${v('email')}\nType of shoot: ${v('type')}\nPreferred date: ${date}\n\n${v('message')}`;
+      window.lulTrack?.('book', v('type'));
       location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent('Photo session: ' + v('type'))}&body=${encodeURIComponent(body)}`;
     });
   }
@@ -252,9 +253,11 @@
       const stars = '\u2605'.repeat(+v('rating')) + '\u2606'.repeat(5 - v('rating'));
       const ok = review.elements.ok.checked ? 'Yes, with first name' : 'No, keep it private';
       const body = `Name: ${v('name')}\nSession: ${v('session')}\nRating: ${stars} (${v('rating')}/5)\nOK to show on the site: ${ok}\n\n${v('review')}`;
+      window.lulTrack?.('review', v('session'));
       location.href = `mailto:${review.dataset.mailto}?subject=${encodeURIComponent('Review: ' + v('session') + ' from ' + v('name'))}&body=${encodeURIComponent(body)}`;
     });
   }
 </script>
+<script src="../assets/track.js?v=1" defer></script>
 </body>
 </html>
