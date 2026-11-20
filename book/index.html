@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css?v=38">
+<link rel="stylesheet" href="../style.css?v=39">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -46,6 +46,7 @@
         <a class="btn" href="#book">Request a date</a>
         <a class="btn btn--ghost" href="../work.html#photography">See my photography</a>
       </div>
+      <a class="more review-link" href="#review">Already had a session? Leave a review &rarr;</a>
     </div>
   </section>
   <section class="tile t4 cover" aria-hidden="true">
@@ -71,7 +72,7 @@
 
   <!-- ============ ABOUT ============ -->
   <section class="tile about t5">
-    <img src="../images/emmet.jpeg" alt="Emmet smiling and giving two thumbs up beside his framed digital artwork at a gallery">
+    <img src="../images/emmet-camera.jpg" alt="Emmet smiling and holding up his camera outdoors at a school event" style="object-position:50% 38%">
     <div>
       <span class="label">Your photographer</span>
       <h2>Hi, I&rsquo;m Emmet.</h2>
@@ -113,6 +114,57 @@
     </form>
   </section>
 
+  <!-- ============ REVIEWS ============
+       When someone sends a review you want to show: delete the two lines
+       marked DELETE below, paste their review in, and copy the <figure>
+       line once per review. -->
+  <!-- DELETE
+  <section class="tile t12" id="reviews">
+    <div class="tile-head"><span class="label">Reviews</span><h2>What clients say</h2></div>
+    <div class="quotes">
+      <figure><blockquote>&ldquo;Paste the review here.&rdquo;</blockquote><figcaption>First name &middot; Senior portraits</figcaption></figure>
+    </div>
+  </section>
+  DELETE -->
+
+  <!-- ============ LEAVE A REVIEW ============
+       Like the booking form, this opens the visitor's email app.
+       Reviews come to you by email; nothing appears on the site
+       until you add it to the Reviews tile above. -->
+  <section class="tile t12" id="review">
+    <div class="tile-head">
+      <span class="label">Already had a session?</span>
+      <h2>Leave a review</h2>
+      <p>A sentence or two helps a lot. Thank you!</p>
+    </div>
+    <form class="book" id="review-form" action="mailto:layeruplabs@gmail.com" method="post" enctype="text/plain" data-mailto="layeruplabs@gmail.com">
+      <label><span>Your name</span><input type="text" name="name" autocomplete="name" required></label>
+      <label><span>Session</span>
+        <select name="session" required>
+          <option value="">Choose one</option>
+          <option>Senior portraits</option>
+          <option>Family photos</option>
+          <option>Headshots</option>
+          <option>Event</option>
+          <option>Something else</option>
+        </select>
+      </label>
+      <fieldset class="stars book__full">
+        <legend>Rating</legend>
+        <div class="stars__row">
+          <input type="radio" name="rating" id="r5" value="5" required><label for="r5" title="5 stars">&#9733;<span class="sr">5 stars</span></label>
+          <input type="radio" name="rating" id="r4" value="4"><label for="r4" title="4 stars">&#9733;<span class="sr">4 stars</span></label>
+          <input type="radio" name="rating" id="r3" value="3"><label for="r3" title="3 stars">&#9733;<span class="sr">3 stars</span></label>
+          <input type="radio" name="rating" id="r2" value="2"><label for="r2" title="2 stars">&#9733;<span class="sr">2 stars</span></label>
+          <input type="radio" name="rating" id="r1" value="1"><label for="r1" title="1 star">&#9733;<span class="sr">1 star</span></label>
+        </div>
+      </fieldset>
+      <label class="book__full"><span>Your review</span><textarea name="review" rows="4" required placeholder="How was your session?"></textarea></label>
+      <label class="check book__full"><input type="checkbox" name="ok" checked> <span>It&rsquo;s okay to show this on the website with my first name</span></label>
+      <div class="book__full"><button class="btn" type="submit">Send review</button></div>
+    </form>
+  </section>
+
   <!-- ============ FAQ ============
        EDIT: change any answer that isn't how you work. -->
   <section class="tile t12" id="faq">
@@ -145,6 +197,18 @@
       const v = (n) => form.elements[n].value.trim();
       const body = `Name: ${v('name')}\nEmail: ${v('email')}\nType of shoot: ${v('type')}\nPreferred date: ${v('date') || 'Flexible'}\n\n${v('message')}`;
       location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent('Photo session: ' + v('type'))}&body=${encodeURIComponent(body)}`;
+    });
+  }
+  // Review form: same idea as the booking form.
+  const review = document.getElementById('review-form');
+  if (review.dataset.mailto) {
+    review.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = (n) => review.elements[n].value.trim();
+      const stars = '\u2605'.repeat(+v('rating')) + '\u2606'.repeat(5 - v('rating'));
+      const ok = review.elements.ok.checked ? 'Yes, with first name' : 'No, keep it private';
+      const body = `Name: ${v('name')}\nSession: ${v('session')}\nRating: ${stars} (${v('rating')}/5)\nOK to show on the site: ${ok}\n\n${v('review')}`;
+      location.href = `mailto:${review.dataset.mailto}?subject=${encodeURIComponent('Review: ' + v('session') + ' from ' + v('name'))}&body=${encodeURIComponent(body)}`;
     });
   }
 </script>

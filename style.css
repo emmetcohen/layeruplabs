@@ -299,6 +299,25 @@ button.btn { cursor: pointer; }
    Delete these two lines to show the empty slots again. */
 .thumb--empty { display: none; }
 .tile:has(.thumb--empty):not(:has(img, video)) { display: none; }
-@media (max-width: 880px) { .bento > .work { grid-column: span 4; } }
-@media (max-width: 520px) { .bento > .work { grid-column: span 6; } .bento > .work.work--wide-sm { grid-column: span 12; } }
 [hidden] { display: none !important; }
+
+/* Leave a review */
+.stars { border: 0; margin: 0; padding: 0; min-width: 0; }
+.stars legend { font: 500 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; padding: 0; }
+.stars__row { display: inline-flex; flex-direction: row-reverse; gap: 2px; }
+.stars input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.stars__row > label { font-size: 2rem; line-height: 1; color: var(--line); cursor: pointer; padding: 2px; transition: color .15s; }
+.stars__row > label:hover, .stars__row > label:hover ~ label,
+.stars input:checked ~ label { color: #f5a623; }
+.stars input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.book label.check { display: flex; align-items: center; gap: 10px; }
+.book label.check input { width: auto; accent-color: var(--accent); }
+.book label.check span { font: 400 .9rem/1.4 var(--body); letter-spacing: 0; text-transform: none; color: var(--ink); }
+.quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.quotes figure { margin: 0; background: var(--bg); border-radius: 14px; padding: 20px; }
+.quotes blockquote { margin: 0 0 .8rem; font-size: 1rem; }
+.quotes figcaption { font: 500 .72rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 880px) { .quotes { grid-template-columns: 1fr; } }
+.review-link { display: inline-block; margin-top: 1.2rem; }
+#review { scroll-margin-top: 24px; }
