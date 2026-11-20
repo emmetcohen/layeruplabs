@@ -202,10 +202,10 @@
   <span>&copy; 2026 Layer Up Labs &middot; Tampa Bay area</span>
   <span><a href="https://www.instagram.com/emmets.art/" target="_blank" rel="noopener">Instagram</a><a href="mailto:layeruplabs@gmail.com">layeruplabs@gmail.com</a></span>
 </div></footer>
-<script src="calendar.js?v=1"></script>
+<script src="calendar.js?v=2"></script>
 <script>
   // Booking calendar: a drop-down under the "Preferred date" field.
-  // Busy days come from unavailable.json (edit them at /book/admin/).
+  // Busy days come from the availability helper (edit them at /book/admin/).
   const dateInput = document.getElementById('book-date');
   const dateBtn = document.getElementById('date-btn');
   const dateBtnText = document.getElementById('date-btn-text');
@@ -230,7 +230,7 @@
   document.getElementById('date-flex').addEventListener('click', () => { cal.clear(); dateBtnText.textContent = 'Flexible'; dateBtnText.classList.remove('is-empty'); openPop(false); dateBtn.focus(); });
   document.addEventListener('click', (e) => { if (!pop.hidden && !e.target.closest('.date-field')) openPop(false); });
   pop.addEventListener('keydown', (e) => { if (e.key === 'Escape') { openPop(false); dateBtn.focus(); } });
-  LULCalendar.loadUnavailable('unavailable.json').then((u) => cal.setUnavailable(u));
+  LULCalendar.loadUnavailable().then((u) => cal.setUnavailable(u));
 
   // Booking form: builds a tidy email from the fields.
   const form = document.getElementById('book-form');

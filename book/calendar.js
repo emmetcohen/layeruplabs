@@ -1,10 +1,13 @@
 /* Layer Up Labs calendar — used by the booking form (book/index.html)
    and the availability admin page (book/admin/index.html).
 
-   Busy days live in book/unavailable.json:
-     { "weekdays": [0, 6], "dates": ["2026-12-24"] }
+   Busy days are kept by a small Google Apps Script "helper" on Emmet's
+   Google account. AVAILABILITY_URL below is that helper's web app address.
+   It returns { ok: true, data: { weekdays: [0, 6], dates: ["2026-12-24"] } }
    weekdays: 0 = Sunday ... 6 = Saturday, blocked every week.
    dates:    single days, written YYYY-MM-DD. */
+
+const AVAILABILITY_URL = '';
 
 (function () {
   const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -20,15 +23,35 @@
     return `${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   };
 
-  // Loads busy days. Never throws: if the file is missing, every day is open.
-  async function loadUnavailable(url) {
+  const tidy = (data) => ({
+    weekdays: Array.isArray(data?.weekdays) ? data.weekdays : [],
+    dates: Array.isArray(data?.dates) ? data.dates : [],
+  });
+
+  // Loads busy days. Never throws: if the helper can't be reached, every day is open.
+  async function loadUnavailable() {
+    if (!AVAILABILITY_URL) return tidy();
     try {
-      const res = await fetch(`${url}?t=${Date.now()}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(res.status);
-      const data = await res.json();
-      return { weekdays: Array.isArray(data.weekdays) ? data.weekdays : [], dates: Array.isArray(data.dates) ? data.dates : [] };
+      const res = await fetch(`${AVAILABILITY_URL}?t=${Date.now()}`, { cache: 'no-store' });
+      const body = await res.json();
+      return tidy(body.data);
     } catch (e) {
-      return { weekdays: [], dates: [] };
+      return tidy();
+    }
+  }
+
+  // Password-checked calls for the admin page. Returns the helper's reply,
+  // or { ok: false, error: 'offline' } if it can't be reached.
+  async function adminCall(body) {
+    if (!AVAILABILITY_URL) return { ok: false, error: 'not-set-up' };
+    try {
+      // Sent as plain text so the browser doesn't need extra permission from Google.
+      const res = await fetch(AVAILABILITY_URL, { method: 'POST', body: JSON.stringify(body) });
+      const reply = await res.json();
+      if (reply.data) reply.data = tidy(reply.data);
+      return reply;
+    } catch (e) {
+      return { ok: false, error: 'offline' };
     }
   }
 
@@ -169,5 +192,5 @@
     return api;
   }
 
-  window.LULCalendar = { Calendar, loadUnavailable, long };
+  window.LULCalendar = { Calendar, loadUnavailable, adminCall, long, ready: () => Boolean(AVAILABILITY_URL) };
 })();

@@ -27,12 +27,6 @@
   .weekly label:has(input:checked) { background: #ffe3e3; border-color: #f2a6a6; color: #b42318; }
   .save-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
   .btn:disabled { opacity: .4; cursor: default; transform: none; }
-  .token-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .token-row input { flex: 1 1 260px; font: 400 .9rem/1 var(--mono); padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); min-width: 0; }
-  .steps-list { margin: 0; padding-left: 1.2rem; color: var(--muted); font-size: .92rem; }
-  .steps-list li { margin-bottom: .4rem; }
-  .steps-list b { color: var(--ink); }
-  details.help summary { cursor: pointer; font: 500 .8rem/1.4 var(--mono); color: var(--accent); margin-top: 1rem; }
 </style>
 </head>
 <body>
@@ -42,22 +36,24 @@
     <a href="../">Book page</a>
   </nav>
 </div></header>
+
 <div class="wrap gate" id="gate">
   <form class="tile gate__box" id="gate-form">
     <span class="label">Admin</span>
-    <h1>Enter passcode</h1>
-    <input id="gate-code" type="password" inputmode="numeric" autocomplete="off" aria-label="Passcode" placeholder="&bull;&bull;&bull;&bull;" required>
-    <button class="btn" type="submit">Unlock</button>
+    <h1>Enter password</h1>
+    <input id="gate-code" type="password" autocomplete="current-password" aria-label="Password" placeholder="&bull;&bull;&bull;&bull;" required>
+    <button class="btn" type="submit" id="gate-btn">Unlock</button>
     <p class="admin-status err" id="gate-msg" aria-live="polite"></p>
   </form>
 </div>
+
 <main id="admin-main" hidden>
 <div class="wrap"><div class="bento">
 
   <section class="tile head t12">
     <span class="label">Admin &middot; only for Emmet</span>
     <h1>Availability</h1>
-    <p class="lede">Tap the days you can&rsquo;t shoot, then press Save. They show as unavailable on the booking calendar about a minute later.</p>
+    <p class="lede">Tap the days you can&rsquo;t shoot, then press Save. They show as unavailable on the booking calendar right away.</p>
   </section>
 
   <section class="tile t8">
@@ -81,82 +77,45 @@
     <div class="save-row">
       <button class="btn" id="save" type="button" disabled>Save changes</button>
       <button class="btn btn--ghost" id="revert" type="button" disabled>Undo changes</button>
-      <p class="admin-status" id="status">Loading&hellip;</p>
+      <button class="btn btn--ghost" id="lock" type="button">Lock</button>
+      <p class="admin-status" id="status"></p>
     </div>
-  </section>
-
-  <section class="tile t12" id="connect">
-    <div class="tile-head">
-      <span class="label">One-time setup on each device</span>
-      <h2>Connect to GitHub</h2>
-      <p>Saving writes to <code>book/unavailable.json</code> in your <b>layeruplabs</b> repo, so this page needs a GitHub key. It stays on this device and is only sent to GitHub.</p>
-    </div>
-    <div class="token-row">
-      <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your GitHub key (starts with github_pat_)">
-      <button class="btn" id="connect-btn" type="button">Connect</button>
-      <button class="btn btn--ghost" id="forget" type="button" hidden>Disconnect this device</button>
-    </div>
-    <details class="help">
-      <summary>How to make a key</summary>
-      <ol class="steps-list" style="margin-top:.8rem">
-        <li>On GitHub, go to <b>Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens</b> and press <b>Generate new token</b>.</li>
-        <li>Name it &ldquo;Website availability&rdquo; and pick an expiration (up to a year).</li>
-        <li>Under <b>Repository access</b>, choose <b>Only select repositories</b> and pick <b>layeruplabs</b>.</li>
-        <li>Under <b>Permissions &rarr; Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
-        <li>Press <b>Generate token</b>, copy it, and paste it above. Don&rsquo;t share it with anyone.</li>
-      </ol>
-    </details>
   </section>
 
 </div></div>
 </main>
-<script src="../calendar.js?v=1"></script>
+<script src="../calendar.js?v=2"></script>
 <script>
-  const REPO = 'emmetcohen/layeruplabs';
-  const PATH = 'book/unavailable.json';
-  const BRANCH = 'main';
-  const KEY = 'lul-admin-token';
-
   const $ = (id) => document.getElementById(id);
   const status = (text, kind = '') => { $('status').textContent = text; $('status').className = `admin-status ${kind}`; };
-  const store = {
-    get: () => { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } },
-    set: (v) => { try { localStorage.setItem(KEY, v); } catch (e) {} },
-    del: () => { try { localStorage.removeItem(KEY); } catch (e) {} },
+  const PASS_KEY = 'lul-admin-pass';
+  const session = {
+    get: () => { try { return sessionStorage.getItem(PASS_KEY) || ''; } catch (e) { return ''; } },
+    set: (v) => { try { sessionStorage.setItem(PASS_KEY, v); } catch (e) {} },
+    del: () => { try { sessionStorage.removeItem(PASS_KEY); } catch (e) {} },
   };
-  let token = store.get();
-  let sha = null;
+  const problems = {
+    'wrong-password': 'Wrong password.',
+    locked: 'Too many wrong tries. Wait 15 minutes and try again.',
+    offline: 'Couldn’t reach the availability helper. Check your internet connection.',
+    'not-set-up': 'The availability helper isn’t set up yet. Send Claude its web app link.',
+    'bad-request': 'Something went wrong. Reload the page and try again.',
+  };
+  const explain = (r) => problems[r.error] || 'Something went wrong. Reload the page and try again.';
+
+  let password = '';
   let saved = { weekdays: [], dates: [] };
   let current = saved;
 
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-  const connected = () => Boolean(token && sha);
-  let connectError = '';
   const refresh = (keepStatus = false) => {
     const dirty = !same(current, saved);
-    $('save').disabled = !dirty || !connected();
+    $('save').disabled = !dirty;
     $('revert').disabled = !dirty;
     const n = current.dates.length;
     $('count').textContent = `${n} day${n === 1 ? '' : 's'} blocked` + (current.weekdays.length ? ' + weekly days' : '');
-    if (dirty && !keepStatus) {
-      status(connected() ? 'Unsaved changes. Press Save.' : (connectError || 'Unsaved changes. Connect to GitHub below before you can save.'), connected() ? '' : 'err');
-    }
+    if (dirty && !keepStatus) status('Unsaved changes. Press Save.');
   };
-
-  // Turns a failed GitHub reply into a plain-English message.
-  async function explain(res) {
-    let said = '';
-    try { said = (await res.json()).message || ''; } catch (e) {}
-    const tip = {
-      401: 'GitHub didn’t accept this key. It may be mistyped or expired. Press “Disconnect this device”, make a new key and connect again.',
-      403: 'This key isn’t allowed to change files. Make a new key with layeruplabs selected and Contents set to “Read and write”.',
-      404: 'This key can’t see the layeruplabs repo. Make a new key and choose layeruplabs under “Repository access”.',
-      409: 'The calendar was changed somewhere else. Reload this page and try again.',
-      422: 'The calendar was changed somewhere else. Reload this page and try again.',
-    }[res.status] || `GitHub error ${res.status}.`;
-    return `${tip}${said ? ` (GitHub says: “${said}”)` : ''}`;
-  }
-  const offline = 'Couldn’t reach GitHub. Check your internet connection and try again.';
 
   const cal = LULCalendar.Calendar($('admin-cal'), {
     mode: 'admin',
@@ -167,119 +126,78 @@
   const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   $('weekly').innerHTML = names.map((n, i) => `<label><input type="checkbox" value="${i}"> ${n}</label>`).join('');
   $('weekly').addEventListener('change', () => {
-    const days = [...$('weekly').querySelectorAll('input:checked')].map((c) => +c.value);
-    cal.setWeekdays(days);
+    cal.setWeekdays([...$('weekly').querySelectorAll('input:checked')].map((c) => +c.value));
   });
   const showWeekly = (days) => $('weekly').querySelectorAll('input').forEach((c) => { c.checked = days.includes(+c.value); });
 
   const apply = (data) => {
-    saved = { weekdays: [...(data.weekdays || [])].sort(), dates: [...(data.dates || [])].sort() };
-    cal.setUnavailable(saved);
-    showWeekly(saved.weekdays);
+    cal.setUnavailable(data);
+    showWeekly(data.weekdays);
     current = cal.value();
     saved = current;
-    refresh();
+    refresh(true);
   };
 
-  const gh = (method, body) => fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}${method === 'GET' ? `?ref=${BRANCH}&t=${Date.now()}` : ''}`, {
-    method,
-    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
-    body: body ? JSON.stringify(body) : undefined,
-    cache: 'no-store',
-  });
-  const decode = (b64) => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), (c) => c.charCodeAt(0)));
-  const encode = (text) => btoa(String.fromCharCode(...new TextEncoder().encode(text)));
-
-  async function load() {
-    sha = null;
-    connectError = '';
-    $('forget').hidden = !token;
-    $('connect').querySelector('h2').textContent = 'Connect to GitHub';
-    if (!token) {
-      apply(await LULCalendar.loadUnavailable('../unavailable.json'));
-      status('Showing the live calendar. Connect to GitHub below to make changes.');
+  // The password is checked on Google's side, not in this page.
+  async function unlock(pass, fromSession) {
+    $('gate-btn').disabled = true;
+    $('gate-msg').className = 'admin-status';
+    $('gate-msg').textContent = 'Checking…';
+    const r = await LULCalendar.adminCall({ action: 'check', password: pass });
+    $('gate-btn').disabled = false;
+    if (!r.ok) {
+      session.del();
+      $('gate-msg').className = 'admin-status err';
+      $('gate-msg').textContent = fromSession && r.error === 'wrong-password' ? '' : explain(r);
+      $('gate-code').value = '';
+      $('gate-code').focus();
       return;
     }
-    status('Loading from GitHub…');
-    let res;
-    try { res = await gh('GET'); } catch (e) { res = null; }
-    if (res && res.ok) {
-      const file = await res.json();
-      apply(JSON.parse(decode(file.content)));
-      sha = file.sha;
-      refresh(true);
-      $('connect').querySelector('h2').textContent = 'Connected to GitHub';
-      status('Connected. Tap days to block them, then Save.', 'ok');
-    } else {
-      apply(await LULCalendar.loadUnavailable('../unavailable.json'));
-      connectError = `Not connected. ${res ? await explain(res) : offline}`;
-      status(connectError, 'err');
-    }
+    password = pass;
+    session.set(pass);
+    $('gate').hidden = true;
+    $('admin-main').hidden = false;
+    apply(r.data);
+    status('Unlocked. Tap days to block them, then Save.', 'ok');
   }
+
+  $('gate-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    unlock($('gate-code').value.trim(), false);
+  });
 
   $('save').addEventListener('click', async () => {
     $('save').disabled = true;
     status('Saving…');
-    const data = cal.value();
-    const text = JSON.stringify(data, null, 2) + '\n';
-    let res;
-    try { res = await gh('PUT', { message: 'Update photo availability', content: encode(text), sha, branch: BRANCH }); } catch (e) { res = null; }
-    if (res && res.ok) {
-      sha = (await res.json()).content.sha;
-      saved = data;
-      current = data;
-      refresh(true);
-      status('Saved. The booking calendar updates in about a minute.', 'ok');
+    const r = await LULCalendar.adminCall({ action: 'save', password, data: cal.value() });
+    if (r.ok) {
+      apply(r.data);
+      status('Saved. The booking calendar is updated.', 'ok');
     } else {
-      status(`Not saved. ${res ? await explain(res) : offline}`, 'err');
+      status(`Not saved. ${explain(r)}`, 'err');
       refresh(true);
     }
   });
 
-  $('revert').addEventListener('click', () => apply(saved));
+  $('revert').addEventListener('click', () => { apply(saved); status('Changes undone.'); });
 
-  $('connect-btn').addEventListener('click', () => {
-    const v = $('token').value.trim();
-    if (!v) return;
-    token = v;
-    store.set(v);
-    $('token').value = '';
-    load();
-  });
-  $('forget').addEventListener('click', () => {
-    token = '';
-    store.del();
-    sha = null;
-    load();
+  $('lock').addEventListener('click', () => {
+    if (!same(current, saved) && !confirm('You have unsaved changes. Lock anyway?')) return;
+    password = '';
+    session.del();
+    current = saved;
+    $('admin-main').hidden = true;
+    $('gate').hidden = false;
+    $('gate-msg').textContent = '';
+    $('gate-code').focus();
   });
 
   addEventListener('beforeunload', (e) => { if (!same(current, saved)) e.preventDefault(); });
-  // Passcode screen. This only hides the page: the code's fingerprint is in
-  // this file, so the real protection is the GitHub key, which nobody else has.
-  // To change the passcode, ask Claude or replace PASS_HASH with the SHA-256 of the new code.
-  const PASS_HASH = '479de61e68a1f232b16498c726ae6afb6de766da18472e8fcbc4bcc5eb153d8b';
-  const sha256 = async (t) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)))]
-    .map((b) => b.toString(16).padStart(2, '0')).join('');
-  const unlock = () => {
-    $('gate').hidden = true;
-    $('admin-main').hidden = false;
-    load();
-  };
-  let unlocked = false;
-  try { unlocked = sessionStorage.getItem('lul-admin-ok') === PASS_HASH; } catch (e) {}
-  if (unlocked) unlock();
+
+  if (!LULCalendar.ready()) $('gate-msg').textContent = problems['not-set-up'];
+  const remembered = session.get();
+  if (remembered) unlock(remembered, true);
   else $('gate-code').focus();
-  $('gate-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (await sha256($('gate-code').value.trim()) === PASS_HASH) {
-      try { sessionStorage.setItem('lul-admin-ok', PASS_HASH); } catch (err) {}
-      unlock();
-    } else {
-      $('gate-msg').textContent = 'Wrong passcode.';
-      $('gate-code').value = '';
-      $('gate-code').focus();
-    }
-  });
 </script>
 </body>
 </html>
