@@ -322,3 +322,40 @@ button.btn { cursor: pointer; }
 .review-link { display: inline-block; margin-top: 1.2rem; }
 #review { scroll-margin-top: 24px; }
 .services .step-link { display: inline-block; margin-top: .7rem; font-size: .75rem; }
+
+/* Calendar (book/calendar.js): booking form + availability admin */
+.date-pick { border: 0; margin: 0; padding: 0; min-width: 0; }
+.date-pick legend { font: 500 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 0; margin-bottom: 10px; }
+.cal { background: var(--bg); border-radius: 16px; padding: clamp(12px, 3vw, 20px); }
+.cal__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.cal__title { font-size: clamp(1.3rem, 3vw, 1.6rem); letter-spacing: -.03em; }
+.cal__nav { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--ink); display: grid; place-items: center; cursor: pointer; transition: border-color .2s, color .2s, opacity .2s; }
+.cal__nav:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.cal__nav:disabled { opacity: .3; cursor: default; }
+.cal__week, .cal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.cal__week { margin-bottom: 6px; }
+.cal__week span { font: 500 .68rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); text-align: center; padding: 4px 0; }
+.cal__day { position: relative; height: clamp(40px, 8.5vw, 58px); border: 1px solid transparent; border-radius: 12px; background: var(--card); color: var(--ink); font: 600 clamp(.9rem, 2.2vw, 1.05rem)/1 var(--display); cursor: pointer; display: grid; place-items: center; padding: 0; transition: border-color .15s, background .15s, color .15s, transform .15s; }
+.cal__day:hover:not([aria-disabled]) { border-color: var(--accent); color: var(--accent); }
+.cal__day:active:not([aria-disabled]) { transform: scale(.95); }
+.cal__day:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cal__day.is-today::after { content: ""; position: absolute; bottom: 18%; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--accent); }
+.cal__day.is-past { background: transparent; color: #b4bcc8; cursor: default; }
+.cal__day.is-busy:not(.is-past) { background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(15,23,32,.07) 5px 6px), transparent; border-color: var(--line); color: #a3acb9; cursor: not-allowed; }
+.cal__day.is-busy:not(.is-past) span { text-decoration: line-through; }
+.cal__day.is-picked { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.cal__day.is-picked:hover { color: var(--accent-ink); }
+.cal__day.is-picked.is-today::after { background: var(--accent-ink); }
+.cal__foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 20px; margin-top: 12px; }
+.cal__picked { margin: 0; font-size: .95rem; color: var(--muted); }
+.cal__picked b { color: var(--ink); font-weight: 600; }
+.cal__clear { font: 500 .75rem/1 var(--mono); color: var(--accent); background: none; border: 0; padding: 4px 6px; cursor: pointer; text-decoration: underline; }
+.cal__legend { margin: 0; display: flex; align-items: center; gap: 6px; font: 400 .72rem/1 var(--mono); color: var(--muted); }
+.key { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-left: 8px; }
+.key--open { background: var(--card); border: 1px solid var(--line); margin-left: 0; }
+.key--busy { border: 1px solid var(--line); background: repeating-linear-gradient(135deg, transparent 0 3px, rgba(15,23,32,.15) 3px 4px); }
+/* Admin: busy days are red so they stand out while editing */
+.cal--admin .cal__day.is-busy:not(.is-past) { background: #ffe3e3; border-color: #f2a6a6; color: #b42318; cursor: pointer; }
+.cal--admin .cal__day.is-busy.is-weekly:not(.is-past) { cursor: not-allowed; background: repeating-linear-gradient(135deg, #ffe3e3 0 5px, #ffd0d0 5px 7px); }
+.cal--admin .cal__day.is-busy:not(.is-past) span { text-decoration: none; }
+@media (max-width: 520px) { .cal__week, .cal__grid { gap: 4px; } .cal__day { border-radius: 9px; } }

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Availability — Layer Up Labs</title>
+<meta name="theme-color" content="#e9ecf1">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css?v=41">
+<style>
+  .admin-status { font: 500 .8rem/1.4 var(--mono); color: var(--muted); margin: 0; }
+  .admin-status.ok { color: #1a7f37; }
+  .admin-status.err { color: #b42318; }
+  .weekly { display: flex; flex-wrap: wrap; gap: 8px; }
+  .weekly label { display: inline-flex; align-items: center; gap: 6px; font: 500 .8rem/1 var(--mono); padding: 10px 12px; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; background: var(--card); }
+  .weekly input { accent-color: #b42318; margin: 0; }
+  .weekly label:has(input:checked) { background: #ffe3e3; border-color: #f2a6a6; color: #b42318; }
+  .save-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+  .btn:disabled { opacity: .4; cursor: default; transform: none; }
+  .token-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .token-row input { flex: 1 1 260px; font: 400 .9rem/1 var(--mono); padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); min-width: 0; }
+  .steps-list { margin: 0; padding-left: 1.2rem; color: var(--muted); font-size: .92rem; }
+  .steps-list li { margin-bottom: .4rem; }
+  .steps-list b { color: var(--ink); }
+  details.help summary { cursor: pointer; font: 500 .8rem/1.4 var(--mono); color: var(--accent); margin-top: 1rem; }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="../../index.html">layer up<b>.</b>labs</a>
+  <nav class="nav" aria-label="Main">
+    <a href="../">Book page</a>
+  </nav>
+</div></header>
+<main>
+<div class="wrap"><div class="bento">
+
+  <section class="tile head t12">
+    <span class="label">Admin &middot; only for Emmet</span>
+    <h1>Availability</h1>
+    <p class="lede">Tap the days you can&rsquo;t shoot, then press Save. They show as unavailable on the booking calendar about a minute later.</p>
+  </section>
+
+  <section class="tile t8">
+    <div id="admin-cal"></div>
+    <div class="cal__foot">
+      <p class="cal__legend"><span class="key key--open"></span>Open <span class="key" style="background:#ffe3e3;border:1px solid #f2a6a6"></span>Unavailable</p>
+      <p class="admin-status" id="count"></p>
+    </div>
+  </section>
+
+  <section class="tile t4">
+    <div class="tile-head">
+      <span class="label">Every week</span>
+      <h2>Always busy on</h2>
+      <p>For days you can never shoot, like school days.</p>
+    </div>
+    <div class="weekly" id="weekly"></div>
+  </section>
+
+  <section class="tile t12">
+    <div class="save-row">
+      <button class="btn" id="save" type="button" disabled>Save changes</button>
+      <button class="btn btn--ghost" id="revert" type="button" disabled>Undo changes</button>
+      <p class="admin-status" id="status">Loading&hellip;</p>
+    </div>
+  </section>
+
+  <section class="tile t12" id="connect">
+    <div class="tile-head">
+      <span class="label">One-time setup on each device</span>
+      <h2>Connect to GitHub</h2>
+      <p>Saving writes to <code>book/unavailable.json</code> in your <b>layeruplabs</b> repo, so this page needs a GitHub key. It stays on this device and is only sent to GitHub.</p>
+    </div>
+    <div class="token-row">
+      <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your GitHub key (starts with github_pat_)">
+      <button class="btn" id="connect-btn" type="button">Connect</button>
+      <button class="btn btn--ghost" id="forget" type="button" hidden>Disconnect this device</button>
+    </div>
+    <details class="help">
+      <summary>How to make a key</summary>
+      <ol class="steps-list" style="margin-top:.8rem">
+        <li>On GitHub, go to <b>Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens</b> and press <b>Generate new token</b>.</li>
+        <li>Name it &ldquo;Website availability&rdquo; and pick an expiration (up to a year).</li>
+        <li>Under <b>Repository access</b>, choose <b>Only select repositories</b> and pick <b>layeruplabs</b>.</li>
+        <li>Under <b>Permissions &rarr; Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>.</li>
+        <li>Press <b>Generate token</b>, copy it, and paste it above. Don&rsquo;t share it with anyone.</li>
+      </ol>
+    </details>
+  </section>
+
+</div></div>
+</main>
+<script src="../calendar.js?v=1"></script>
+<script>
+  const REPO = 'emmetcohen/layeruplabs';
+  const PATH = 'book/unavailable.json';
+  const BRANCH = 'main';
+  const KEY = 'lul-admin-token';
+
+  const $ = (id) => document.getElementById(id);
+  const status = (text, kind = '') => { $('status').textContent = text; $('status').className = `admin-status ${kind}`; };
+  const store = {
+    get: () => { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } },
+    set: (v) => { try { localStorage.setItem(KEY, v); } catch (e) {} },
+    del: () => { try { localStorage.removeItem(KEY); } catch (e) {} },
+  };
+  let token = store.get();
+  let sha = null;
+  let saved = { weekdays: [], dates: [] };
+  let current = saved;
+
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const refresh = () => {
+    const dirty = !same(current, saved);
+    $('save').disabled = !dirty || !token;
+    $('revert').disabled = !dirty;
+    const n = current.dates.length;
+    $('count').textContent = `${n} day${n === 1 ? '' : 's'} blocked` + (current.weekdays.length ? ' + weekly days' : '');
+    if (dirty) status(token ? 'Unsaved changes.' : 'Unsaved changes. Connect to GitHub below to save.');
+  };
+
+  const cal = LULCalendar.Calendar($('admin-cal'), {
+    mode: 'admin',
+    onChange: (v) => { current = v; refresh(); },
+  });
+
+  // Weekly checkboxes
+  const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  $('weekly').innerHTML = names.map((n, i) => `<label><input type="checkbox" value="${i}"> ${n}</label>`).join('');
+  $('weekly').addEventListener('change', () => {
+    const days = [...$('weekly').querySelectorAll('input:checked')].map((c) => +c.value);
+    cal.setWeekdays(days);
+  });
+  const showWeekly = (days) => $('weekly').querySelectorAll('input').forEach((c) => { c.checked = days.includes(+c.value); });
+
+  const apply = (data) => {
+    saved = { weekdays: [...(data.weekdays || [])].sort(), dates: [...(data.dates || [])].sort() };
+    cal.setUnavailable(saved);
+    showWeekly(saved.weekdays);
+    current = cal.value();
+    saved = current;
+    refresh();
+  };
+
+  const gh = (method, body) => fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}${method === 'GET' ? `?ref=${BRANCH}&t=${Date.now()}` : ''}`, {
+    method,
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+    body: body ? JSON.stringify(body) : undefined,
+    cache: 'no-store',
+  });
+  const decode = (b64) => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), (c) => c.charCodeAt(0)));
+  const encode = (text) => btoa(String.fromCharCode(...new TextEncoder().encode(text)));
+
+  async function load() {
+    $('forget').hidden = !token;
+    $('connect').querySelector('h2').textContent = token ? 'Connected to GitHub' : 'Connect to GitHub';
+    if (!token) {
+      apply(await LULCalendar.loadUnavailable('../unavailable.json'));
+      status('Showing the live calendar. Connect to GitHub below to make changes.');
+      return;
+    }
+    status('Loading from GitHub…');
+    try {
+      const res = await gh('GET');
+      if (res.status === 401) throw new Error('GitHub didn’t accept that key. Check it or make a new one.');
+      if (res.status === 404) throw new Error('Couldn’t find the file. Make sure the key has access to the layeruplabs repo.');
+      if (!res.ok) throw new Error(`GitHub error ${res.status}.`);
+      const file = await res.json();
+      sha = file.sha;
+      apply(JSON.parse(decode(file.content)));
+      status('Connected. Tap days to block them, then Save.', 'ok');
+    } catch (e) {
+      apply(await LULCalendar.loadUnavailable('../unavailable.json'));
+      status(e.message, 'err');
+    }
+  }
+
+  $('save').addEventListener('click', async () => {
+    $('save').disabled = true;
+    status('Saving…');
+    const data = cal.value();
+    const text = JSON.stringify(data, null, 2) + '\n';
+    try {
+      const res = await gh('PUT', { message: 'Update photo availability', content: encode(text), sha, branch: BRANCH });
+      if (res.status === 409 || res.status === 422) throw new Error('The calendar changed somewhere else. Reload this page and try again.');
+      if (res.status === 401 || res.status === 403) throw new Error('GitHub didn’t accept the key. It may have expired.');
+      if (!res.ok) throw new Error(`GitHub error ${res.status}.`);
+      sha = (await res.json()).content.sha;
+      saved = data;
+      current = data;
+      refresh();
+      status('Saved. The booking calendar updates in about a minute.', 'ok');
+    } catch (e) {
+      status(e.message, 'err');
+      refresh();
+    }
+  });
+
+  $('revert').addEventListener('click', () => apply(saved));
+
+  $('connect-btn').addEventListener('click', () => {
+    const v = $('token').value.trim();
+    if (!v) return;
+    token = v;
+    store.set(v);
+    $('token').value = '';
+    load();
+  });
+  $('forget').addEventListener('click', () => {
+    token = '';
+    store.del();
+    sha = null;
+    load();
+  });
+
+  addEventListener('beforeunload', (e) => { if (!same(current, saved)) e.preventDefault(); });
+  load();
+</script>
+</body>
+</html>

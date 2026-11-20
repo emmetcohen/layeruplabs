@@ -12,6 +12,13 @@ Plain HTML + one stylesheet (`style.css`). No build step.
   - Prices and "what's included": in the Services section of `book/index.html`.
   - FAQ: at the bottom of `book/index.html`; change any answer that isn't how you work.
   - Booking form: opens the visitor's email app; see the comment above it to switch to Formspree.
+  - Calendar: `book/calendar.js` draws the date picker. Busy days come from
+    `book/unavailable.json`.
+  - Marking busy days: open **layeruplabs.com/book/admin/** (not linked anywhere, hidden
+    from Google). Tap days or tick "Always busy on" weekdays, then Save. Saving needs a
+    GitHub fine-grained token with Contents read/write on this repo only; the page explains
+    how to make one and keeps it on that device. Each save is a commit to `main`, so pull
+    before editing the site on your computer.
   - `photography/` just forwards old links to Work > Photography.
 - Colors and fonts: variables at the top of `style.css`
 - Photos: put files in `images/`. "Photo coming soon" slots are hidden on the live site

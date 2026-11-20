@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css?v=40">
+<link rel="stylesheet" href="../style.css?v=41">
 </head>
 <body>
 <header class="site-header"><div class="wrap">
@@ -98,7 +98,7 @@
     <form class="book" id="book-form" action="mailto:layeruplabs@gmail.com" method="post" enctype="text/plain" data-mailto="layeruplabs@gmail.com">
       <label><span>Name</span><input type="text" name="name" autocomplete="name" required></label>
       <label><span>Email</span><input type="email" name="email" autocomplete="email" required></label>
-      <label><span>Type of shoot</span>
+      <label class="book__full"><span>Type of shoot</span>
         <select name="type" required>
           <option value="">Choose one</option>
           <option>Senior portraits</option>
@@ -108,7 +108,15 @@
           <option>Something else</option>
         </select>
       </label>
-      <label><span>Preferred date</span><input type="date" name="date"></label>
+      <fieldset class="date-pick book__full">
+        <legend>Preferred date</legend>
+        <input type="hidden" name="date" id="book-date">
+        <div id="book-cal"></div>
+        <div class="cal__foot">
+          <p class="cal__picked" id="book-date-text" aria-live="polite">No date picked yet. That&rsquo;s fine if you&rsquo;re flexible.</p>
+          <p class="cal__legend"><span class="key key--open"></span>Open <span class="key key--busy"></span>Unavailable</p>
+        </div>
+      </fieldset>
       <label class="book__full"><span>Message</span><textarea name="message" rows="4" placeholder="What's the shoot for?"></textarea></label>
       <div class="book__full"><button class="btn" type="submit">Send request</button></div>
     </form>
@@ -188,14 +196,31 @@
   <span>&copy; 2026 Layer Up Labs &middot; Tampa Bay area</span>
   <span><a href="https://www.instagram.com/emmets.art/" target="_blank" rel="noopener">Instagram</a><a href="mailto:layeruplabs@gmail.com">layeruplabs@gmail.com</a></span>
 </div></footer>
+<script src="calendar.js?v=1"></script>
 <script>
+  // Booking calendar. Busy days come from unavailable.json (edit them at /book/admin/).
+  const dateInput = document.getElementById('book-date');
+  const dateText = document.getElementById('book-date-text');
+  const cal = LULCalendar.Calendar(document.getElementById('book-cal'), {
+    mode: 'pick',
+    onChange: (d) => {
+      dateInput.value = d || '';
+      dateText.innerHTML = d
+        ? `<b>${LULCalendar.long(d)}</b> <button type="button" class="cal__clear">Clear</button>`
+        : 'No date picked yet. That&rsquo;s fine if you&rsquo;re flexible.';
+    },
+  });
+  dateText.addEventListener('click', (e) => { if (e.target.closest('.cal__clear')) cal.clear(); });
+  LULCalendar.loadUnavailable('unavailable.json').then((u) => cal.setUnavailable(u));
+
   // Booking form: builds a tidy email from the fields.
   const form = document.getElementById('book-form');
   if (form.dataset.mailto) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const v = (n) => form.elements[n].value.trim();
-      const body = `Name: ${v('name')}\nEmail: ${v('email')}\nType of shoot: ${v('type')}\nPreferred date: ${v('date') || 'Flexible'}\n\n${v('message')}`;
+      const date = v('date') ? LULCalendar.long(v('date')) : 'Flexible';
+      const body = `Name: ${v('name')}\nEmail: ${v('email')}\nType of shoot: ${v('type')}\nPreferred date: ${date}\n\n${v('message')}`;
       location.href = `mailto:${form.dataset.mailto}?subject=${encodeURIComponent('Photo session: ' + v('type'))}&body=${encodeURIComponent(body)}`;
     });
   }
