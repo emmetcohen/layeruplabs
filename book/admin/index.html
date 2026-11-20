@@ -12,6 +12,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../style.css?v=42">
 <style>
+  .gate { padding: clamp(2rem, 10vh, 6rem) 0; }
+  .gate__box { max-width: 380px; margin: 0 auto; display: grid; gap: 14px; text-align: center; }
+  .gate__box h1 { font-size: 2rem; }
+  .gate__box input { font: 600 1.6rem/1 var(--mono); letter-spacing: .4em; text-align: center; padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); width: 100%; }
+  .gate__box input:focus { outline: none; border-color: var(--accent); background: var(--card); }
+  .gate__box .admin-status { min-height: 1.2em; }
   .admin-status { font: 500 .8rem/1.4 var(--mono); color: var(--muted); margin: 0; }
   .admin-status.ok { color: #1a7f37; }
   .admin-status.err { color: #b42318; }
@@ -36,7 +42,16 @@
     <a href="../">Book page</a>
   </nav>
 </div></header>
-<main>
+<div class="wrap gate" id="gate">
+  <form class="tile gate__box" id="gate-form">
+    <span class="label">Admin</span>
+    <h1>Enter passcode</h1>
+    <input id="gate-code" type="password" inputmode="numeric" autocomplete="off" aria-label="Passcode" placeholder="&bull;&bull;&bull;&bull;" required>
+    <button class="btn" type="submit">Unlock</button>
+    <p class="admin-status err" id="gate-msg" aria-live="polite"></p>
+  </form>
+</div>
+<main id="admin-main" hidden>
 <div class="wrap"><div class="bento">
 
   <section class="tile head t12">
@@ -219,7 +234,32 @@
   });
 
   addEventListener('beforeunload', (e) => { if (!same(current, saved)) e.preventDefault(); });
-  load();
+  // Passcode screen. This only hides the page: the code's fingerprint is in
+  // this file, so the real protection is the GitHub key, which nobody else has.
+  // To change the passcode, ask Claude or replace PASS_HASH with the SHA-256 of the new code.
+  const PASS_HASH = '479de61e68a1f232b16498c726ae6afb6de766da18472e8fcbc4bcc5eb153d8b';
+  const sha256 = async (t) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)))]
+    .map((b) => b.toString(16).padStart(2, '0')).join('');
+  const unlock = () => {
+    $('gate').hidden = true;
+    $('admin-main').hidden = false;
+    load();
+  };
+  let unlocked = false;
+  try { unlocked = sessionStorage.getItem('lul-admin-ok') === PASS_HASH; } catch (e) {}
+  if (unlocked) unlock();
+  else $('gate-code').focus();
+  $('gate-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (await sha256($('gate-code').value.trim()) === PASS_HASH) {
+      try { sessionStorage.setItem('lul-admin-ok', PASS_HASH); } catch (err) {}
+      unlock();
+    } else {
+      $('gate-msg').textContent = 'Wrong passcode.';
+      $('gate-code').value = '';
+      $('gate-code').focus();
+    }
+  });
 </script>
 </body>
 </html>
