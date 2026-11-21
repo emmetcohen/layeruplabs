@@ -263,8 +263,8 @@ button.btn { cursor: pointer; }
 .photo-promo h2 { margin-bottom: .6rem; }
 .photo-promo p { margin: 0; opacity: .9; }
 .photo-promo .more { color: inherit; display: inline-block; margin-top: 1rem; }
-.promo-shots { display: flex; height: 100%; min-height: 180px; }
-.promo-shots img { width: 150px; height: 100%; object-fit: cover; }
+.promo-shots { display: flex; gap: 8px; height: 100%; min-height: 180px; }
+.promo-shots img { width: 150px; height: 100%; object-fit: cover; border-radius: 14px; }
 
 @media (max-width: 880px) {
   .grid.services { grid-template-columns: 1fr 1fr; }
