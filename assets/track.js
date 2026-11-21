@@ -60,6 +60,7 @@
   const lookup = async () => {
     const services = [
       'https://get.geojs.io/v1/ip/geo.json',
+      'https://ipwho.is/',
       'https://ipapi.co/json/',
     ];
     for (const url of services) {
