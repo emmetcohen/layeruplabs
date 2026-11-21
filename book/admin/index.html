@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../style.css?v=43">
+<link rel="stylesheet" href="../../style.css?v=44">
 <style>
   .gate { padding: clamp(2rem, 10vh, 6rem) 0; }
   .gate__box { max-width: 380px; margin: 0 auto; display: grid; gap: 14px; text-align: center; }
@@ -183,9 +183,11 @@
       </section>
       <section class="tile t6 chart-tile"><h3>Most visited pages</h3><div class="meters" id="ls-pages"></div></section>
       <section class="tile t6 chart-tile"><h3>Where visitors come from</h3><p class="sub">The site they clicked from</p><div class="meters" id="ls-sources"></div></section>
+      <section class="tile t6 chart-tile"><h3>Where visitors are</h3><p class="sub">Approximate city, from each visitor&rsquo;s first page of the day</p><div class="meters" id="ls-places"></div>
+        <h3 style="margin-top:1.6rem">By state or country</h3><div class="meters" id="ls-areas"></div></section>
       <section class="tile t6 chart-tile"><h3>Photo sets &amp; projects</h3><p class="sub">Most opened on the Work page</p><div class="meters" id="ls-projects"></div></section>
-      <section class="tile t6 chart-tile"><h3>Phone or computer</h3><div class="meters" id="ls-devices"></div>
-        <h3 style="margin-top:1.6rem">Booking forms by type</h3><div class="meters" id="ls-book"></div></section>
+      <section class="tile t6 chart-tile"><h3>Phone or computer</h3><div class="meters" id="ls-devices"></div></section>
+      <section class="tile t6 chart-tile"><h3>Booking forms by type</h3><div class="meters" id="ls-book"></div></section>
     </div>
   </div>
 
@@ -342,6 +344,13 @@
   };
   const pretty = (slug) => slug.split('/').pop().replace(/^photography-/, '').replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
   const DEVICE_NAMES = { phone: 'Phone', tablet: 'Tablet', computer: 'Computer' };
+  const STATE_NAMES = { AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado', CT: 'Connecticut',
+    DE: 'Delaware', FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa', KS: 'Kansas',
+    KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota',
+    MS: 'Mississippi', MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire', NJ: 'New Jersey',
+    NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio', OK: 'Oklahoma', OR: 'Oregon',
+    PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina', SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah',
+    VT: 'Vermont', VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming', DC: 'Washington, D.C.', PR: 'Puerto Rico' };
 
   // Tooltip (shared)
   const tip = $('tip');
@@ -481,6 +490,8 @@
     meters($('ls-projects'), st.projects, (p) => PROJECT_NAMES[p] || pretty(p), 'No projects opened yet.');
     meters($('ls-devices'), st.devices, (d) => DEVICE_NAMES[d] || d, 'No visitors yet.');
     meters($('ls-book'), st.bookTypes, (b) => b, 'No booking forms sent yet.');
+    meters($('ls-places'), st.places || [], (p) => p, 'No locations yet.');
+    meters($('ls-areas'), st.areas || [], (a) => STATE_NAMES[a] || a, 'No locations yet.');
   }
 
   async function loadStats() {

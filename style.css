@@ -402,3 +402,4 @@ button.btn { cursor: pointer; }
 .pick__list li[aria-selected="true"] svg { visibility: visible; }
 .pick__list:focus-visible li.is-active { box-shadow: inset 0 0 0 2px var(--accent); }
 #review.tile { overflow: visible; }
+.site-footer .privacy { flex-basis: 100%; font-size: .68rem; opacity: .8; }

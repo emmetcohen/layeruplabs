@@ -1,7 +1,8 @@
 /* Layer Up Labs - anonymous visit counter.
    Sends one small note per page view to the Google helper: the page, phone or
-   computer, which website sent the visitor, and whether it's their first page
-   today. No names, no IP addresses, no cookies, no ad trackers.
+   computer, which website sent the visitor, whether it's their first page
+   today, and (once a day) their approximate city. No names, no IP addresses
+   saved, no cookies, no ad trackers.
    The only thing stored in the visitor's browser is the date of their last
    visit, so a visitor isn't counted twice on the same day.
    Emmet's own devices stop counting once he unlocks the admin page. */
@@ -53,9 +54,40 @@
     newToday = false;
   };
 
+  // Approximate city for a visitor's first page of the day. The lookup
+  // service sees the visitor's IP to answer, but only city / state / country
+  // are kept and sent on; the IP is never saved.
+  const lookup = async () => {
+    const services = [
+      'https://get.geojs.io/v1/ip/geo.json',
+      'https://ipapi.co/json/',
+    ];
+    for (const url of services) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 2500);
+      try {
+        const d = await (await fetch(url, { signal: ctrl.signal, credentials: 'omit', referrerPolicy: 'no-referrer' })).json();
+        const parts = [d.city, d.region, d.country_code, d.country_name || d.country].map((v) => String(v || '').replace(/\|/g, ' ').slice(0, 40));
+        if (parts[2]) return parts.join('|');
+      } catch (e) { /* try the next service */ } finally { clearTimeout(timer); }
+    }
+    return '';
+  };
+
   // Work page projects live after the # (work.html#photography/photography-cars).
   const pathNow = () => location.pathname + (location.hash.includes('/') ? location.hash : '');
-  view(pathNow());
+  if (newToday && !skip) {
+    // First page today: wait (up to a few seconds) for the city, but never lose
+    // the visit if they leave first.
+    const first = { path: pathNow(), newToday: true, returning };
+    newToday = false;
+    let sent = false;
+    const go = (loc) => { if (!sent) { sent = true; send('view', { ...first, loc }); } };
+    addEventListener('pagehide', () => go(''), { once: true });
+    lookup().then(go);
+  } else {
+    view(pathNow());
+  }
   addEventListener('hashchange', () => { if (location.hash.includes('/')) view(pathNow()); });
 
   // Instagram link clicks.
